@@ -101,6 +101,7 @@ with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "r") as in_file:
 book_urls.pop(0)
 
 for url in book_urls:
+    print(url)
     reviews = get_book_info(url)
 
     review_scores = []
@@ -119,9 +120,6 @@ for url in book_urls:
         reviewers.append(reviewers_pg)
 
         next_page = click_through_reviews(url)
-
-        if not next_page:
-            break
 
     with open(f"{os.getcwd()}/csv_files/bookreviews.csv", "a") as out_file:
         writer = csv.writer(out_file, delimiter=",")
