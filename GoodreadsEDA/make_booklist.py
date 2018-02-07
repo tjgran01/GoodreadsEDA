@@ -30,6 +30,9 @@ auth_urls = ["https://www.goodreads.com/author/list/322069.Liane_Moriarty",
              ]
 
 def get_auth_bks(url):
+    """Opens a url for an author's booklist page on goodreads.com and returns
+    a list of urls for each of the author's books."""
+
     try:
         html = urlopen(url)
         bsObj = BeautifulSoup(html, "html.parser")
@@ -42,6 +45,7 @@ def get_auth_bks(url):
         print(e)
         return None
     return auth_bks
+    
 
 for auth_url in auth_urls:
     auth_name = auth_url[auth_url.rfind(".") + 1:]
