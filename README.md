@@ -11,6 +11,19 @@ facing review information on Goodreads.com about each of that author's books int
 a sqlite3 database so that exploratory data analysis may be performed on the
 scraped data.
 
+## Quickstart.
+
+To run all the scripts in the proper order navigate to `GoodreadsEDA/GoodreadsEDA
+/main.py`.
+
+If you wish to run the scripts individually they should be run in this order:
+
+1. `./make_booklist.py`
+2. `./scp_bks.py`
+
+As `scp_bks.py` depends on a .csv file in created as output for `make_booklist.py`
+in order to run.
+
 ## Current Author List:
 
 The data the current iteration of the project is looking into is lesser known
