@@ -13,8 +13,9 @@ scraped data.
 
 ## Quickstart.
 
-To run all the scripts in the proper order navigate to `GoodreadsEDA/GoodreadsEDA
-/main.py`.
+To run all the scripts in the proper order navigate to:
+
+`GoodreadsEDA/GoodreadsEDA/main.py`.
 
 If you wish to run the scripts individually they should be run in this order:
 
