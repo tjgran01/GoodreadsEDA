@@ -6,7 +6,6 @@ from selenium import webdriver
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-from selenium import webdriver
 
 def get_book_info(url):
 

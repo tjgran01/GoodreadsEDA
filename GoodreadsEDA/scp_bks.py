@@ -5,6 +5,7 @@ import sqlite3
 import sys
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 
 def get_book_urls():
@@ -50,134 +51,118 @@ def replace_double_quotes(string):
     return(string)
 
 
+# First, get a list of all the urls for the books by the authors.
+book_urls = get_book_urls()
+
+# Options for the Chrome driver. Chome operates without calling a window.
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+
+# Create sqlite3 cursor
+conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
+c = conn.cursor()
+
+# If no database exists, create one.
 try:
-    # First, get a list of all the urls for the books by the authors.
-    book_urls = get_book_urls()
+    c.execute(f"""CREATE TABLE Reviews (
+                  book_auth TEXT(100) NOT NULL,
+                  book_title TEXT(100) NOT NULL,
+                  book_url TEXT(9999) NOT NULL,
+                  review_score INT(100),
+                  user_name TEXT(100) NOT NULL,
+                  review_date TEXT(100) NOT NULL
+                  );""")
+except sqlite3.OperationalError as e:
+    print("Table already exists. The program will append the current table. \n")
 
-    # Options for the Chrome driver. Chome operates without calling a window.
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
 
-    # Create sqlite3 cursor
-    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-    c = conn.cursor()
+# Remove Header row From booksnlinks.csv
+book_urls.pop(0)
 
-    # If no database exists, create one.
-    try:
-        c.execute(f"""CREATE TABLE Reviews (
-                      book_auth TEXT(100),
-                      book_title TEXT(100),
-                      book_url TEXT(9999),
-                      review_score INT(100),
-                      user_name TEXT(100),
-                      review_date TEXT(100)
-                      );""")
-    except sqlite3.OperationalError as e:
-        print("Table 'Reviews' already exists.")
+for entry in book_urls:
+    author = entry[0]
+    title = entry[1]
+    url = entry[2]
 
-    # Remove Header row From booksnlinks.csv
-    book_urls.pop(0)
+    print(author, title)
+    print("-" * 50)
+    print(url)
+    print("-" * 50)
 
-    for entry in book_urls:
-        author = entry[0]
-        title = entry[1]
-        url = entry[2]
+    driver = webdriver.Chrome(chrome_options=options)
+    driver.get(url)
 
-        print(author, title)
+    page_count = 1
+    # Goodreads keeps a collection of 10 pages of 30 reviews available on the
+    # books page at a time.
+    for x in range(0, 10):
         print("-" * 50)
-        print(url)
+        print(f"Page: {page_count}")
         print("-" * 50)
 
-        driver = webdriver.Chrome(chrome_options=options)
-        driver.get(url)
+        reviews = driver.find_elements_by_class_name("reviewHeader")
 
-        page_count = 1
-        # Goodreads keeps a collection of 10 pages of 30 reviews available on the
-        # books page at a time.
-        for x in range(0, 10):
-            print("-" * 50)
-            print(f"Page: {page_count}")
-            print("-" * 50)
-
-            dates = driver.find_elements_by_class_name("reviewDate")
-            users = driver.find_elements_by_class_name("user")
-            scores = driver.find_elements_by_class_name(" staticStars")
-
-            # First instances of scores is not tied to a user review. It is the avg
-            # review listed at the top of the book page.
-            scores.pop(0)
-
-            # Turn scores from string value to interger
-            int_scores = []
-            for i, score in enumerate(scores):
-                score = scores_to_numbers(score.text)
-                print(f"Score: {score} {dates[i].text}")
-                int_scores.append(score)
-
-            # Sometimes people do not leave a star rating with their review.
-            # This is an issue I will have to work out. Currently, it ignores the page.
-            if len(int_scores) != len(dates):
-                print("Inconsistent number of scores and entries on page.")
-
-                # Pages have a len of 30 reviews. Though this won't catch all
-                # cases, (if total reviews < 150 and % 30 == 0) this is a quick and
-                # dirty way of avioding clicking on a link that leads nowhere
-                if len(dates) < 30:
-                    break
-            else:
-                for i, date in enumerate(dates):
-                    try:
-                        if '"' in title:
-                            title = replace_double_quotes(title)
-                            print(title)
-                        c.execute(f"""INSERT INTO Reviews (
-                                     book_auth, book_title,
-                                     book_url, review_score,
-                                     user_name, review_date)
-                                     VALUES ("{author}", "{title}",
-                                     "{url}", "{int_scores[i]}",
-                                     "{users[i].text}", "{date.text}"
-                                     )""")
-
-                    # Some usernames have non ASCI text, this will throw an
-                    # OperationalError, to stop the program from halting just Mark
-                    # user_name as invalid, as it will not be used in analysis.
-                    except sqlite3.OperationalError as e:
-                        print(e)
-                        c.execute(f"""INSERT INTO Reviews (
-                                 book_auth, book_title,
-                                 book_url, review_score,
-                                 user_name, review_date)
-                                 VALUES ("{author}", "{title}",
-                                 "{url}", "{int_scores[i]}",
-                                 "invalid_username", "{date.text}"
-                                 )""")
-                    conn.commit()
-
-            print("clicking link!")
+        for i, review in enumerate(reviews):
+            user = review.find_element_by_class_name("user").text
+            date = review.find_element_by_class_name("reviewDate").text
             try:
-                next_link = driver.find_element_by_class_name("next_page")
-                driver.execute_script("arguments[0].click()", next_link)
-                print(driver.find_element_by_class_name("next_page").text)
-                print("sleeping... ...")
-                # after experimenting with a few different sleep times, this
-                # time (3.5) seems to have allowed the page the proper amount of
-                # time to load.
-                time.sleep(3.5)
-                page_count += 1
-            except:
-                print("Could Not Find a link")
-                print("reloading page...")
-                # keep an eye on this. might just need to adjust sleep time.
+                score = review.find_element_by_class_name(" staticStars").text
+            except NoSuchElementException as e:
+                print("No Score Given")
+                score = "No Score Given"
+            # Convert Score to Number Value
+            score = scores_to_numbers(score)
+            print(f"{i + 1} | {user} | {date} | {score}")
 
-            # Pages have a len of 30 reviews. Though this won't catch all
-            # cases, (if total reviews < 150 and % 30 == 0) this is a quick and
-            # dirty way of avioding clicking on a link that leads nowhere
-            if len(dates) < 30:
-                break
+            try:
+                # Gets rid of escaping issues caused by title having "" chars in
+                # it.
+                if '"' in title:
+                    title = replace_double_quotes(title)
+                    print(title)
+                c.execute(f"""INSERT INTO Reviews (
+                             book_auth, book_title,
+                             book_url, review_score,
+                             user_name, review_date)
+                             VALUES ("{author}", "{title}",
+                             "{url}", "{score}",
+                             "{user}", "{date}"
+                             )""")
+            # Some usernames have non ASCI text, this will throw an
+            # OperationalError, to stop the program from halting just Mark
+            # user_name as invalid, as it will not be used in analysis.
+            except sqlite3.OperationalError as e:
+                print(e)
+                c.execute(f"""INSERT INTO Reviews (
+                         book_auth, book_title,
+                         book_url, review_score,
+                         user_name, review_date)
+                         VALUES ("{author}", "{title}",
+                         "{url}", "{score}",
+                         "invalid_username", "{date}"
+                         )""")
+            conn.commit()
 
-        driver.close()
-except:
-    print("As, you can see... something went horribly wrong")
+        print("clicking link!")
+        try:
+            next_link = driver.find_element_by_class_name("next_page")
+            driver.execute_script("arguments[0].click()", next_link)
+            print(driver.find_element_by_class_name("next_page").text)
+            print("sleeping... ...")
+            # after experimenting with a few different sleep times, this
+            # time (3.5) seems to have allowed the page the proper amount of
+            # time to load.
+            time.sleep(3.5)
+            page_count += 1
+        except:
+            print("Could Not Find a link")
+            print("reloading page...")
+            # keep an eye on this. might just need to adjust sleep time.
+
+        # Pages have a len of 30 reviews. Though this won't catch all
+        # cases, (if total reviews < 150 and % 30 == 0) this is a quick and
+        # dirty way of avioding clicking on a link that leads nowhere
+        if len(reviews) < 30:
+            break
+
     driver.close()
-    sys.exit()
