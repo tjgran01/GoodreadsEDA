@@ -155,8 +155,8 @@ for entry in book_urls:
             time.sleep(3.5)
             page_count += 1
         except:
-            print("Could Not Find a link")
-            print("reloading page...")
+            print("Could Not Find a link!")
+            break
             # keep an eye on this. might just need to adjust sleep time.
 
         # Pages have a len of 30 reviews. Though this won't catch all
