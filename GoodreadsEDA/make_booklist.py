@@ -45,7 +45,7 @@ def get_auth_bks(url):
         print(e)
         return None
     return auth_bks
-    
+
 
 for auth_url in auth_urls:
     auth_name = auth_url[auth_url.rfind(".") + 1:]

@@ -9,16 +9,13 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 def get_book_urls():
-    """Loads the export file from 'make_booklist.py', and gets the urls of All
+    """Loads the export file from 'make_booklist.py', and gets the urls of all
     of the books to pull reviews for."""
 
     with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "r") as in_file:
         books = csv.reader(in_file, delimiter=",")
 
-        book_urls = []
-        for book in books:
-            book_urls.append(book)
-
+        book_urls = [b for b in books]s
         return book_urls
 
 
@@ -45,16 +42,17 @@ def scores_to_numbers(review_text):
 def replace_double_quotes(string):
     """When entering information into the SQL db, there is a chance to get
     double quote characters within the text. This turns them into single
-    quotes, so they do not escape the insert command."""
+    quotes, so they do not escape the insert statement."""
 
     string = string.replace('"', "'")
     return(string)
 
 
-# First, get a list of all the urls for the books by the authors.
+# Get a list of all the urls for the books by the authors supplied in
+# make_booklist.py.
 book_urls = get_book_urls()
 
-# Options for the Chrome driver. Chome operates without calling a window.
+# Options for the Chrome driver, so Chrome operates without calling a window.
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
 
@@ -115,11 +113,10 @@ for entry in book_urls:
             print(f"{i + 1} | {user} | {date} | {score}")
 
             try:
-                # Gets rid of escaping issues caused by title having "" chars in
-                # it.
+                # Gets rid of escaping issues caused by book titles having ""
+                # chars in them.
                 if '"' in title:
                     title = replace_double_quotes(title)
-                    print(title)
                 c.execute(f"""INSERT INTO Reviews (
                              book_auth, book_title,
                              book_url, review_score,
@@ -128,8 +125,13 @@ for entry in book_urls:
                              "{url}", "{score}",
                              "{user}", "{date}"
                              )""")
+            # The issue below may have been fixed at this point now that the
+            # code as been reworked. I don't recall ever seeing this message
+            # printed in my last running of the program, but I'll keep it for
+            # not just in case.
+
             # Some usernames have non ASCI text, this will throw an
-            # OperationalError, to stop the program from halting just Mark
+            # OperationalError. to stop the program from halting just Mark
             # user_name as invalid, as it will not be used in analysis.
             except sqlite3.OperationalError as e:
                 print(e)
@@ -166,3 +168,4 @@ for entry in book_urls:
             break
 
     driver.close()
+conn.close()
