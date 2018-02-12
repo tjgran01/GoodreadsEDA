@@ -90,7 +90,7 @@ provided you will need to:
 1. Navigate to the author in question's book list page on
 www.goodreads.com. The links come in a format such as the one listed below:
 
-https://www.goodreads.com/author/list/`author_id`.`author_name`
+https://www.goodreads.com/author/list/author_id.author_name
 
 The easiest way to find this page is to:
 - Search for the author on www.goodreads.com,
