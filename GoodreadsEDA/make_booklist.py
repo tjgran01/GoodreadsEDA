@@ -48,10 +48,13 @@ def get_auth_bks(url):
 
 
 for auth_url in auth_urls:
+    # The author's name is listed at the end of each url, after the last '.'
     auth_name = auth_url[auth_url.rfind(".") + 1:]
     print(auth_name)
     auth_bks = get_auth_bks(auth_url)
 
+    # QUESTION: This feels not very idiomatic. Should the .csv just be opened
+    # in 'append' mode no matter what?
     if not os.path.exists(f"{os.getcwd()}/csv_files/booksnlinks.csv"):
         with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "w") as out_file:
             writer = csv.writer(out_file, delimiter=",")

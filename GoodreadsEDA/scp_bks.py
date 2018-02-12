@@ -21,7 +21,7 @@ def get_book_urls():
 
 def scores_to_numbers(review_text):
     """Goodreads ratings are stored as text, this function converts them to their
-    numerical value. If there is no score given, this function returns None"""
+    numerical values. If there is no score given, this function returns None"""
 
     if review_text == "it was amazing":
         review_score = 5
@@ -71,7 +71,7 @@ try:
                   review_date TEXT(100) NOT NULL
                   );""")
 except sqlite3.OperationalError as e:
-    print("Table already exists. The program will append the current table. \n")
+    print("Table already exists. The program will append the current table.")
 
 
 # Remove Header row From booksnlinks.csv
@@ -92,12 +92,16 @@ for entry in book_urls:
 
     page_count = 1
     # Goodreads keeps a collection of 10 pages of 30 reviews available on the
-    # books page at a time.
+    # book's page at a time.
+
+    # A smarter way would be to check if current page reviews match the last
+    # page, reviews, breaking a while loop if this is the case.
     for x in range(0, 10):
         print("-" * 50)
         print(f"Page: {page_count}")
         print("-" * 50)
 
+        # grab every review on the current page.
         reviews = driver.find_elements_by_class_name("reviewHeader")
 
         for i, review in enumerate(reviews):
@@ -107,16 +111,16 @@ for entry in book_urls:
                 score = review.find_element_by_class_name(" staticStars").text
             except NoSuchElementException as e:
                 print("No Score Given")
-                score = "No Score Given"
+                score = "None"
             # Convert Score to Number Value
             score = scores_to_numbers(score)
             print(f"{i + 1} | {user} | {date} | {score}")
 
+            # Gets rid of escaping issues caused by book titles having ""
+            # chars in them.
+            if '"' in title:
+                title = replace_double_quotes(title)
             try:
-                # Gets rid of escaping issues caused by book titles having ""
-                # chars in them.
-                if '"' in title:
-                    title = replace_double_quotes(title)
                 c.execute(f"""INSERT INTO Reviews (
                              book_auth, book_title,
                              book_url, review_score,
@@ -128,11 +132,11 @@ for entry in book_urls:
             # The issue below may have been fixed at this point now that the
             # code as been reworked. I don't recall ever seeing this message
             # printed in my last running of the program, but I'll keep it for
-            # not just in case.
+            # now just in case.
 
             # Some usernames have non ASCI text, this will throw an
             # OperationalError. to stop the program from halting just Mark
-            # user_name as invalid, as it will not be used in analysis.
+            # user_name as invalid, as it will not be used in the analysis.
             except sqlite3.OperationalError as e:
                 print(e)
                 c.execute(f"""INSERT INTO Reviews (
@@ -156,14 +160,15 @@ for entry in book_urls:
             # time to load.
             time.sleep(3.5)
             page_count += 1
+        # keep an eye on this. might just need to adjust sleep timeself.
         except:
             print("Could Not Find a link!")
             break
-            # keep an eye on this. might just need to adjust sleep time.
 
-        # Pages have a len of 30 reviews. Though this won't catch all
+        # Pages have a max len of 30 reviews. Though this won't catch all
         # cases, (if total reviews < 150 and % 30 == 0) this is a quick and
-        # dirty way of avioding clicking on a link that leads nowhere
+        # dirty way of avioding clicking on a link that leads nowhere for a book
+        # with < 150 reviews.
         if len(reviews) < 30:
             break
 
