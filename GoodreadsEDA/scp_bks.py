@@ -15,7 +15,7 @@ def get_book_urls():
     with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "r") as in_file:
         books = csv.reader(in_file, delimiter=",")
 
-        book_urls = [b for b in books]s
+        book_urls = [b for b in books]
         return book_urls
 
 

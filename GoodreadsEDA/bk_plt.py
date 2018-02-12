@@ -4,9 +4,17 @@ import os
 import datetime
 
 import matplotlib.pyplot as plt
+plt.style.use('seaborn-pastel')
 import matplotlib.dates as mdates
 
+# Test Big Little Lies
+# bk = "Big Little Lies"
+# mv_release = "2017-02-19"
+
+# Test Ender's Game
 bk = "Ender's Game (Ender's Saga, #1)"
+mv_release = '2013-11-01'
+
 conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
 
 df = pd.read_sql_query(f"""SELECT * FROM Reviews
@@ -34,6 +42,7 @@ y = df["review_score_rolling"]
 print(df)
 
 plt.plot(x, y)
+plt.axvline(x=mv_release, color="r")
 plt.title(f"Review Scores of '{bk}' over time.")
 plt.show()
 
