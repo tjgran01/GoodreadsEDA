@@ -102,11 +102,11 @@ www.goodreads.com. The links come in a format such as the one listed below:
 
 https://www.goodreads.com/author/list/author_id.author_name
 
-The easiest way to find this page is to:
-- Search for the author on www.goodreads.com,
-- Navigate to the author's page, and click on the link on the page that says
-"`author_name`'s books."
-- Copy the page url.
+  The easiest way to find this page is to:
+  - Search for the author on www.goodreads.com,
+  - Navigate to the author's page, and click on the link on the page that says
+  "`author_name`'s books."
+  - Copy the page url.
 
 2. Inside of this project navigate to `/GoodreadsEDA/make_booklist.py`.
 

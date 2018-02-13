@@ -41,13 +41,12 @@ df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
 df.dropna(inplace=True)
 
 # take rolling average of every fifteen review scores.
-df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews, center=False).mean()
+df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
+                                                        center=False).mean()
 
 # plotting parameters
 x = df.index
 y = df["review_score_rolling"]
-
-print(df)
 
 plt.plot(x, y)
 
@@ -56,7 +55,7 @@ plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
 
 plt.xlabel("Year")
 
-# plot release date of movie
+# plot release date of movie as a line and label it.
 plt.axvline(x=mv_release, color="#f99f75")
 mv_release_datetime = datetime.strptime(mv_release, "%Y-%m-%d")
 plt.text(mv_release_datetime + timedelta(days=10), 4,

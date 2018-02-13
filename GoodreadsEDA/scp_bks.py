@@ -20,8 +20,9 @@ def get_book_urls():
 
 
 def scores_to_numbers(review_text):
-    """Goodreads ratings are stored as text, this function converts them to their
-    numerical values. If there is no score given, this function returns None"""
+    """Goodreads ratings are stored as text, this function converts them to
+    their numerical values. If there is no score given, this function returns
+    None"""
 
     if review_text == "it was amazing":
         review_score = 5
@@ -48,7 +49,7 @@ def replace_double_quotes(string):
     return(string)
 
 
-# Get a list of all the urls for the books by the authors supplied in
+# Get a list of all the urls for the books by the authors supplied from
 # make_booklist.py.
 book_urls = get_book_urls()
 
