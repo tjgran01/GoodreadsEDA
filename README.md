@@ -14,6 +14,16 @@ scraped data.
 Once the data has been scraped it is pulled into a pandas dataframe, where it
 is then cleaned and organized by time, and visualized.
 
+## EDA Questions.
+
+The project as it currently stands is interested in exploring two questions:
+
+1. Does a movie / television show made about a work of fiction effect the average
+rating of the <em>book</em>?
+
+2. If an effect <em>exists</em> does it carry over to the author's other works?
+
+
 ## Quickstart.
 
 To run all the scripts in the proper order navigate to:
@@ -103,12 +113,3 @@ The easiest way to find this page is to:
 3. In the top of the file there is a list of urls called `auth_urls`. Replace
 the current values in this list with the author's you are interested in getting
 review information for.
-
-## EDA Questions.
-
-The project as it currently stands is interested in exploring two questions:
-
-1. Does a movie / television show made about a work of fiction effect the average
-rating of the <em>book</em>?
-
-2. If an effect <em>exists</em> does it carry over to the author's other works?
