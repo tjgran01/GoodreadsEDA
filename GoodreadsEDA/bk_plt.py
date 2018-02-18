@@ -31,7 +31,9 @@ movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
               "The Handmaid’s Tale", "The Dinner",
               "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
-# Test Cases.
+# Test Cases the Reviews.book_title != Release_Date.book_title, so two variables
+# are currently needed in order to gather all the information for books / movie
+# release dates. Might need to insert into Release_Date that matches Reviews.
 
 # Test Big Little Lies
 # bk = "Big Little Lies"
