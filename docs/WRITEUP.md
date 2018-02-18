@@ -30,6 +30,9 @@ does this have any relation or impact on the author's other works?
 
 # Methods
 
+<small>Figure 1-1</small>
+![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/GoodreadsEDA/docs/img/Ender's.png)
+
 # Results
 
 # Conclusion
