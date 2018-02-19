@@ -17,8 +17,8 @@ version they viewed on screen.
 
 It comes as a surprise when a movie is better received than it's source material
 (critically speaking, that is), so much so that this phenomenon requires further
-investigation. Do we <em>actually</em> view the book as better than the film? And
-if so, then <em>why?</em> or in <em>what way</em> to we view the book as a more valid
+investigation. Do we *actually* view the book as better than the film? And
+if so, then *why?* or in *what way* to we view the book as a more valid
 version of the story? Though there is a vast theoretical literature explaining why
 this phenomenon might be the case, few efforts using publicly avilable data have
 corroborated theese claims < citation needed >.
@@ -30,9 +30,9 @@ does this have any relation or impact on the author's other works?
 
 # Methods
 
+# Results
+
 <small>Figure 1-1</small>
 ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/Ender's.png)
-
-# Results
 
 # Conclusion

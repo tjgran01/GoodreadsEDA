@@ -14,14 +14,18 @@ scraped data.
 Once the data has been scraped it is pulled into a pandas dataframe, where it
 is then cleaned and organized by time, and visualized.
 
+The Writeup for this project is located at:
+
+`/docs/WRITEUP.md`
+
 ## EDA Questions.
 
 The project as it currently stands is interested in exploring two questions:
 
 1. Does a movie / television show made about a work of fiction effect the average
-rating of the <em>book</em>?
+rating of the *book*?
 
-2. If an effect <em>exists</em> does it carry over to the author's other works?
+2. If an effect *exists* does it carry over to the author's other works?
 
 
 ## Quickstart.
@@ -32,7 +36,7 @@ To run all the scripts in the proper order navigate to:
 
 If you are running this script from scratch, be prepared to wait a while
 (about eight hours with the current author list). Might I recommend watching
-the entirely of <em>'Rotten'</em> on Netflix, and then making dinner, eating it,
+the entirely of *'Rotten'* on Netflix, and then making dinner, eating it,
 and reading a book while this program runs? (Or do what I did and sleep)
 
 If you wish to run the scripts individually they should be run in this order:
