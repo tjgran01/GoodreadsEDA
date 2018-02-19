@@ -43,14 +43,14 @@ options = webdriver.ChromeOptions()
 options.add_argument('headless')
 
 movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
-              "Call Me By Your Name", "Everything Everything",
-              "Room", "Brooklyn", "A Man Called Ove",
+              "Call Me By Your Name", "Everything, Everything",
+              "Brooklyn", "A Man Called Ove",
               "Miss Peregrine’s Home for Peculiar Children",
               "The Girl on the Train", "The Light Between Oceans",
-              "The 5th Wave", "Still Alice", "The D.U.F.F.",
+              "The 5th Wave", "Still Alice", "The DUFF",
               "Beasts of No Nation", "The Family Fang",
               "This Is Where I Leave You", "Me and Earl and the Dying Girl",
-              "The Handmaid’s Tale", "The Dinner",
+              "The Handmaid's Tale", "The Dinner",
               "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
 for title in movie_titl:

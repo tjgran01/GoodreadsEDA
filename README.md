@@ -74,7 +74,6 @@ The current author list for the project is below:
 * Dave Eggers – The Circle
 * André Aciman – Call Me By Your Name
 * Nicola Yoon – Everything Everything
-* Emma Donoghue – Room
 * Colm Tóibín – Brooklyn
 * Fredrik Backman – A Man Called Ove
 * Ransom Riggs - Miss Peregrine’s Home for Peculiar Children
