@@ -38,13 +38,14 @@ movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
               "The Handmaid's Tale", "The Dinner",
               "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
-
 for i, titl in enumerate(movie_titl):
     try:
         bk = movie_titl[i]
         # Get movie release date for movie and df of reviews for the book.
         conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
         mv_release = get_mv_release(bk)
+        # These two cases seemed to be giving me trouble, so I'm just hard coding them
+        # For now.
         if titl == "Ender’s Game":
             df = pd.read_sql_query(f"""SELECT * FROM Reviews
                                        WHERE book_title = "Ender's Game (Ender's Saga, #1)"
@@ -58,9 +59,7 @@ for i, titl in enumerate(movie_titl):
 
         conn.close()
 
-        print(f"""SELECT * FROM Reviews WHERE book_title LIKE "{bk}%";""")
-
-        df.drop(["matching_title"], axis=1, inplace=True)
+        df.drop(["matching_title", "book_url"], axis=1, inplace=True)
 
         # turn string dates into datetime objects, and sort the dataframe by date.
         df["review_date"] = pd.to_datetime(df["review_date"])
