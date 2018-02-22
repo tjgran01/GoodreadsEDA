@@ -3,7 +3,6 @@ import numpy as np
 import sqlite3
 import os
 from datetime import datetime
-from datetime import timedelta
 from scipy.stats import ttest_ind
 import sys
 
@@ -39,7 +38,10 @@ movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
               "The Handmaid's Tale", "The Dinner",
               "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
+# Create empty df to append each book to after preprocessing.
 df_all = pd.DataFrame()
+
+# Go through every title in the list above.
 for i, titl in enumerate(movie_titl):
     bk = movie_titl[i]
     # Get movie release date for movie and df of reviews for the book.
@@ -78,48 +80,100 @@ for i, titl in enumerate(movie_titl):
     # take rolling average of every fifteen review scores.
     df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
                                                             center=False).mean()
+
     df_all = df_all.append(df)
 
-print(df_all)
-
-# df_all["year_before_release"] = df["movie_release"].apply(lambda x: x - pd.DateOffset(years=1))
-# df_all["year_after_release"] = df["movie_release"].apply(lambda x: x + pd.DateOffset(years=1))
+df_all["year_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(years=1))
+df_all["year_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(years=1))
+df_all["6mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=6))
+df_all["6mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(months=6))
+df_all["3mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=3))
+df_all["3mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(months=3))
 
 df_before = df_all[df_all.index <= df_all["movie_release"]]
 df_after = df_all[df_all.index > df_all["movie_release"]]
 
+df_before_1yr = df_before[df_before.index >= df_before["year_before_release"]]
+df_after_1yr = df_after[df_after.index <= df_after["year_after_release"]]
+
+df_before_6mo = df_before[df_before.index >= df_before["6mo_before_release"]]
+df_after_6mo = df_after[df_after.index <= df_after["6mo_after_release"]]
+
+df_before_3mo = df_before[df_before.index >= df_before["3mo_before_release"]]
+df_after_3mo = df_after[df_after.index <= df_after["3mo_after_release"]]
+
+
+
 # Report Stats.
+print("-" * 90)
+print("ALL REVIEWS")
+print("-" * 90)
 print(f"Mean review score before movie release: {df_before['review_score'].mean()}")
 print(f"Mean review score after movie release: {df_after['review_score'].mean()}")
+print(f"Difference in mean: {df_after['review_score'].mean() - df_before['review_score'].mean()}")
 print(f"Std. review score before movie release: {df_before['review_score'].std()}")
 print(f"Std. review score after movie release: {df_after['review_score'].std()}")
 print(f"T-Test (t-statistic): {ttest_ind(df_after['review_score'], df_before['review_score'])}")
-
+print(f"n Before: {df_before.shape[0]}")
+print(f"n After: {df_after.shape[0]}")
+print("-" * 90)
+print("ALL REVIEWS WITHIN 1 YEAR OF MOVIE RELEASE")
+print("-" * 90)
+print(f"Mean review score before movie release: {df_before_1yr['review_score'].mean()}")
+print(f"Mean review score after movie release: {df_after_1yr['review_score'].mean()}")
+print(f"Difference in mean: {df_after_1yr['review_score'].mean() - df_before_1yr['review_score'].mean()}")
+print(f"Std. review score before movie release: {df_before_1yr['review_score'].std()}")
+print(f"Std. review score after movie release: {df_after_1yr['review_score'].std()}")
+print(f"T-Test (t-statistic): {ttest_ind(df_after_1yr['review_score'], df_before_1yr['review_score'])}")
+print(f"n Before: {df_before_1yr.shape[0]}")
+print(f"n After: {df_after_1yr.shape[0]}")
+print("-" * 90)
+print("ALL REVIEWS WITHIN 6 MONTHS OF MOVIE RELEASE")
+print("-" * 90)
+print(f"Mean review score before movie release: {df_before_6mo['review_score'].mean()}")
+print(f"Mean review score after movie release: {df_after_6mo['review_score'].mean()}")
+print(f"Difference in mean: {df_after_6mo['review_score'].mean() - df_before_6mo['review_score'].mean()}")
+print(f"Std. review score before movie release: {df_before_6mo['review_score'].std()}")
+print(f"Std. review score after movie release: {df_after_6mo['review_score'].std()}")
+print(f"T-Test (t-statistic): {ttest_ind(df_after_6mo['review_score'], df_before_6mo['review_score'])}")
+print(f"n Before: {df_before_6mo.shape[0]}")
+print(f"n After: {df_after_6mo.shape[0]}")
+print("-" * 90)
+print("ALL REVIEWS WITHIN 3 MONTHS OF MOVIE RELEASE")
+print("-" * 90)
+print(f"Mean review score before movie release: {df_before_3mo['review_score'].mean()}")
+print(f"Mean review score after movie release: {df_after_3mo['review_score'].mean()}")
+print(f"Difference in mean: {df_after_3mo['review_score'].mean() - df_before_3mo['review_score'].mean()}")
+print(f"Std. review score before movie release: {df_before_3mo['review_score'].std()}")
+print(f"Std. review score after movie release: {df_after_3mo['review_score'].std()}")
+print(f"T-Test (t-statistic): {ttest_ind(df_after_3mo['review_score'], df_before_3mo['review_score'])}")
+print(f"n Before: {df_before_3mo.shape[0]}")
+print(f"n After: {df_after_3mo.shape[0]}")
 # Plotting Parameters
 
-x = df_before.index
-y = df_before["review_score_rolling"]
-x1 = df_after.index
-y1 = df_after["review_score_rolling"]
-
-
-plt.plot(x, y)
-plt.plot(x1, y1)
-
-plt.yticks(np.arange(2.5, 5.5, .5)) # books are seldom given a score < 3.
-plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
-
-# plot release date of movie as a line and label it.
-plt.axvline(x=mv_release, color="#f99f75")
-mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
-plt.text(mv_release_datetime + timedelta(days=10), 4,
-                                         'Movie Release Date',
-                                         rotation=90,
-                                         color='#767a78')
-
-plt.xlabel("Year")
-plt.xlim(mv_release_datetime - relativedelta(years=1),
-         mv_release_datetime + relativedelta(years=1))
-plt.title(f"Review Scores of book list over time.")
-sns.despine()
-plt.show()
+# x = df_before.index
+# y = df_before["review_score_rolling"]
+# x1 = df_after.index
+# y1 = df_after["review_score_rolling"]
+#
+#
+# plt.plot(x, y)
+# plt.plot(x1, y1)
+#
+# plt.yticks(np.arange(2.5, 5.5, .5)) # books are seldom given a score < 3.
+# plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
+#
+# # plot release date of movie as a line and label it.
+# plt.axvline(x=mv_release, color="#f99f75")
+# mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
+# plt.text(mv_release_datetime + timedelta(days=10), 4,
+#                                          'Movie Release Date',
+#                                          rotation=90,
+#                                          color='#767a78')
+#
+# plt.xlabel("Year")
+# plt.xlim(mv_release_datetime - relativedelta(years=1),
+#          mv_release_datetime + relativedelta(years=1))
+# plt.title(f"Review Scores of book list over time.")
+# sns.despine()
+# plt.show()
