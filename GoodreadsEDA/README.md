@@ -2,11 +2,11 @@
 1. [Overview](#overview)
     - [To Contribute](#to_contribute)
 2. [Scripts](#scripts)
-    - [make_booklist.py](#make_booklist.py)
-    - [scp_bks.py](#scp_bks.py)
-    - [imdb_release.py](#imdb_release.py)
-    - [bk_plt.py](#bk_plt.py)
-    - [all_bks.py](#all_bks.py)
+    - [make_booklist.py](#make_booklistpy)
+    - [scp_bks.py](#scp_bkspy)
+    - [imdb_release.py](#imdb_releasepy)
+    - [bk_plt.py](#bk_pltpy)
+    - [all_bks.py](#all_bkspy)
 
 # Overview
 
@@ -139,7 +139,7 @@ Currently this script takes about 8 hours to run to generate the current dataset
 ##### Created: 2/2018
 ##### Created by: Trevor Grant
 ##### Email Support: tjgran01@syr.edu
-##### Created for: Creating a SQLite3 database with all of the public facing reviews for each of the books in the author list.
+##### Created for: Creating a table in SQLite3 database with all release dates for the movies based off of books in the dataset.
 
 #### What this script does:
 
@@ -168,3 +168,60 @@ to get a movie release for each book, but because books sometimes have slightly 
 then the films, this didn't work out in practice. If you are attempting to use this project as a
 baseline for your own analysis. Try to give the two tables a common key so that a merge can actually
 be successful.
+
+## bk_plt.py
+
+##### Created: 2/2018
+##### Created by: Trevor Grant
+##### Email Support: tjgran01@syr.edu
+##### Created for: Generating a line graph that looks at the rolling average of review scores of books that were adapted to film over time.
+
+#### What this script does:
+
+This script will iterate through the names in the same `movie_titl` list used in `imdb_release.py`,
+make a pandas DataFrame of that particular book, get the release date listed in the "Release_Dates"
+table in the `reviews.db` database, and plot all of this information in line graph, displaying the
+movie release date as a solid line to indicate when a change in review scores might be expected.
+
+#### *This file takes as input*:
+
+In order for this script to work both the "Reviews" and "Release_Date" tables in the SQLite3
+database must be generated via the scripts `scp_bks.py` and `imdb_release.py`. However, if you are
+not interested in plotting a movie release date, or just wish to get a visualization of a certain
+book over time, you can still run this script without the movie release information.
+
+#### *This script gives as output*:
+
+A graph, or series of graphs depending on how many books the user is interested in plotting.
+
+#### Notes, Future, etc:
+
+Work will continue to be done on this script so that each book can act as a subplot, so that all
+the books that the user wants to visualize will be displayed simultaneously, rather than having to
+exit out of one graph in order to get the next, as this is tedious to do if the use is interested in looking at many books.
+
+## all_bks.py
+
+##### Created: 2/2018
+##### Created by: Trevor Grant
+##### Email Support: tjgran01@syr.edu
+##### Created for: Prints basic stats about book review scores out before and after the release of a movie adaptation of the book.
+
+#### What this script does:
+
+This script takes the average review score of all books before and after their release dates, and
+compares it to the average review score of all books after their movie release dates. This script
+looks at the overall change in the mean, the change in mean 1 year before the release of the film
+to 1 year after, the change in mean 6 months before the release of the film and 6 months after, and
+the change in mean 3 months before the release of the film and 3 months after.
+
+#### *This file takes as input*:
+
+In order for this script to work both the "Reviews" and "Release_Date" tables in the SQLite3
+database must be generated via the scripts `scp_bks.py` and `imdb_release.py`.
+
+#### *This script gives as output*:
+
+Outputs to the console the mean, std, n, and ttest for each subdivision of time. 
+
+#### Notes, Future, etc:
