@@ -4,6 +4,7 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 
+# List of all the author book list pages on goodreads.com
 auth_urls = ["https://www.goodreads.com/author/list/322069.Liane_Moriarty",
              "https://www.goodreads.com/author/list/281810.Jojo_Moyes",
              "https://www.goodreads.com/author/list/3371.Dave_Eggers",
@@ -30,7 +31,10 @@ auth_urls = ["https://www.goodreads.com/author/list/322069.Liane_Moriarty",
 
 def get_auth_bks(url):
     """Opens a url for an author's booklist page on goodreads.com and returns
-    a list of urls for each of the author's books."""
+    a list of urls for each of the author's books.
+
+    INPUT: Author's URL
+    OUTPUT: List of links to author's books."""
 
     try:
         html = urlopen(url)
@@ -52,29 +56,24 @@ for auth_url in auth_urls:
     print(auth_name)
     auth_bks = get_auth_bks(auth_url)
 
-    # QUESTION: This feels not very idiomatic. Should the .csv just be opened
-    # in 'append' mode no matter what?
+    # Create booksnlinks.csv if it doesn't exist already.
     if not os.path.exists(f"{os.getcwd()}/csv_files/booksnlinks.csv"):
         with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "w") as out_file:
             writer = csv.writer(out_file, delimiter=",")
-
+            # Write header to .csv file.
             writer.writerow(["Author_Name", "Book_Title", "Goodreads_Link"])
-
             for index, row in enumerate(auth_bks):
                 info = [auth_name,
                         auth_bks[index].get_text()[1:-1],
                         f"https://www.goodreads.com{auth_bks[index].attrs['href']}",
                         ]
-                print(info)
                 writer.writerow(info)
     else:
         with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "a") as out_file:
             writer = csv.writer(out_file, delimiter=",")
-
             for index, row in enumerate(auth_bks):
                 info = [auth_name,
                         auth_bks[index].get_text()[1:-1],
                         f"https://www.goodreads.com{auth_bks[index].attrs['href']}",
                         ]
-                print(info)
                 writer.writerow(info)

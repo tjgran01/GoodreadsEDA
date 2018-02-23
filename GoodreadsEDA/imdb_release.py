@@ -37,7 +37,6 @@ except sqlite3.OperationalError as e:
                   release_date TEXT(100) NOT NULL
                   );""")
 
-
 # Options for the Chrome driver, so Chrome operates without calling a window.
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
