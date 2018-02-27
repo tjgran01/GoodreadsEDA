@@ -116,7 +116,7 @@ after, and three months before the movie's release against three months after.
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
 
-|Review Score|# of Scores|
+|Review Score|# of Scores|        
 |---|---|
 |5.0|2986|
 |4.0|2618|
@@ -124,7 +124,7 @@ The mean review score of all of the original books mentioned in the main `README
 |2.0|621|
 |1.0|371|
 
-
+![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
 <small>Figure 1-1</small>
 ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
