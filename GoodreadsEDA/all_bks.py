@@ -83,6 +83,10 @@ for i, titl in enumerate(movie_titl):
 
     df_all = df_all.append(df)
 
+print(f"Mean review score: {df_all['review_score'].mean()}")
+print(f"Std review score: {df_all['review_score'].std()}")
+print(df_all["review_score"].value_counts())
+
 df_all["year_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(years=1))
 df_all["year_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(years=1))
 df_all["6mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=6))

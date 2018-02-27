@@ -90,9 +90,41 @@ analyzing the review score, and so this feature was omitted. Another improvement
 integrate API calls, to see if more of the review data submitted to Goodreads could be combined with
 the scraped data. However, the three hundred publicly avilable reviews per book were adequate for
 the purposes of this project. For further documentation on `scp_bks.py`, see the `README.md`
-located within `scp_bks.py`'s directory.
+located within `scp_bks.py`'s directory. Movie or television releases were also scraped, albeit
+through a much less labor intensive process, via the `imdb_release.py` file, which iterated through
+the original movie titles, and searched imdb.com for the relevant release dates, and stored them in
+another table (Release_Dates) within the `reviews.db` database.
 
-# Results
+After the database was formed individual books were plotted, along with their corresponding
+movie release dates, on separate charts in order to get a better understanding of what (if anything)
+was worth further exploration. This process was done using `bk_plt.py`. After Looking over the
+resulting plots it was clear that the plots needed a little more refinement if they were to be
+elucidating. `bk_plt.py` was then adjusted to plot only review scores between three to five (being
+that it was **rare** for the book to dip below an average score of three), as well as adjusting the
+plots to focus only on a year before and after the release of the movie to better highlight what
+effect (in any) a film adaptation may have had on the reception of the book.
+
+After the plots were generated, t-tests were performed between the mean review scores before and
+after the movie release date in four different timeframes: The entire timeframe, one year before
+the movie's release against one year after, six months before the movie's release against six months
+after, and three months before the movie's release against three months after.
+
+# Results:
+
+## Overall:
+
+The mean review score of all of the original books mentioned in the main `README.md` was:
+3.92 (std=1.13). With the distribution of scores below:
+
+|Review Score|# of Scores|
+|---|:---:|---:|
+|5.0|2986|
+|4.0|2618|
+|3.0|1240|
+|2.0|621|
+|1.0|371|
+
+
 
 <small>Figure 1-1</small>
 ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
