@@ -143,10 +143,11 @@ were evenly or normally distributed.
 
 ## Individual Books.
 
-<small>Figure 1-1</small>
 ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
-**Above: Four Line Charts indicating a particular book's rolling review score from one year before
-to one year after a screen adaptation's release date. The orange, solid, horizontal line indicates
-the release date of a screen adaptation.**
+
+*Above: Four Line Charts indicating a particular book's rolling review score (n=20) from one
+year before to one year after a screen adaptation's release date. The orange, solid, horizontal
+line indicates the release date of a screen adaptation.*
+
 
 # Discussion
