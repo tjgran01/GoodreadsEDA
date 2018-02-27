@@ -179,9 +179,29 @@ was **lower** following the film's release than prior. Values in green indicate 
 review score for that time frame was positive, or that the average review score for that
 timeframe was **higher** following the film's release than prior.*
 
-
-
-
-
+The final analysis involved taking the entire collection of books and computing both the mean
+and standard deviation for the scores that were submitted to Goodreads both before and after the
+release of the film, to see if any statistically significant differences could be found. The
+results of the computations can be found in the table above. A visualization was also created
+to help show the difference in means for all of the different sets of data.
 
 # Discussion
+
+Overall, it seems there is a slight change in review scores over time based on the overall
+difference in review scores reported before and after the release of a film. The change, however,
+is a rather small (.06 of a 'star'), difference. Interestingly, it seems the closer you get to the
+day of release, the magnitude of the difference increases, with the three month section of the data
+having the largest difference between before and after the film. Interesting though it may be, it's
+possible that this may be due to the difference in sample sizes between the before and after
+reviews. In order to be sure that this phenomenon is real, a different dataset with similar
+properties would have to gathered and balanced to ensure that this is not just an artifact of
+this particular data.
+
+The findings posted above do not indicate that a clear effect exists over the entire dataset, at
+least not an effect that warrants further investigation into how an author's other book's reviews
+are effected by the release of a film.
+
+Others using Goodreads.com as a sample should be aware of the potential skew within the data,
+mentioned in the Results section of this writeup, and should consider that skew when working out
+their final analysis. The low differences in means in this particular project could be attributable
+to this effect, seen very clearly in the data that was gathered. 
