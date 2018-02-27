@@ -158,13 +158,28 @@ were evenly or normally distributed.
 
 ## Before and After Movie Releases:
 
+|                 | 3mo   | 6mo   | 1yr   | All  |
+|-----------------|-------|-------|-------|------|
+| Mean Before     | 4.11  | 3.98  | 3.89  | 3.88 |
+| Mean After      | 3.93  | 3.89  | 3.84  | 3.95 |
+| Mean Difference | -0.18 | -0.08 | -0.05 | 0.06 |
+| Std. Before     | 1.08  | 1.17  | 1.2   | 1.20 |
+| Std. After      | 1.17  | 1.16  | 1.17  | 1.09 |
+| T-Statistic     | -1.83 | -1.17 | -0.94 | 2.42 |
+| P-Value         | .06   | 0.24  | 0.35  | 0.02 |
+| N-Before        | 285   | 440   | 798   | 2519 |
+| N-After         | 635   | 635   | 1351  | 4744 |
+
 ![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
+
 *Above: A line chart plotting the difference in average review scores of different time periods
 before and after a book's release (3mo, 6mo, 1yr, and All Reviews). Values in the red section of
 the chart indicate that the score was negative, or that the average review score for that timeframe
 was **lower** following the film's release than prior. Values in green indicate that the average
 review score for that time frame was positive, or that the average review score for that
-timeframe was **higher** following the film's release than prior.
+timeframe was **higher** following the film's release than prior.*
+
+
 
 
 
