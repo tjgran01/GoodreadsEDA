@@ -15,7 +15,7 @@ short of the bar that was set by the work from which the film drew it's inspirat
 
 This concept isn't foreign to those outside of reading circles. It is well known
 amongst literary publishers that an upcoming film or television program based off
-of a book will translate to a large uptick in sales [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/). People often
+of a book will translate to a large uptick in sales( [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/). People often)
 wish to read the original version of the story before seeing the film, or television
 show, in order to compare the merits or both the original and adaptation. A reader
 may also wish to get a deeper version of the story with the book compared to the
@@ -79,9 +79,9 @@ located at:
 
 ```GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db```
 
-in this repository. The process was automated via the `scp_bks.py` script, which took the
-.csv file created from `make_booklist.py`, visited the URL for each entry, and retrieved every
-review score, username, and review date from each review avilable on the site at that time.
+The process was automated via the `scp_bks.py` script, which took the .csv file created from
+`make_booklist.py`, visited the URL for each entry, and retrieved every review score, username, and
+review date from each review avilable on the site at that time.
 
 Goodreads displays thirty reviews per page, and allows a user to view ten pages, totaling three
 hundred reviews per book. Future versions of this script may also retrieve the review text from the
@@ -107,7 +107,8 @@ effect (in any) a film adaptation may have had on the reception of the book.
 After the plots were generated, t-tests were performed between the mean review scores before and
 after the movie release date in four different timeframes: The entire timeframe, one year before
 the movie's release against one year after, six months before the movie's release against six months
-after, and three months before the movie's release against three months after.
+after, and three months before the movie's release against three months after. This process was
+accomplished using the `all_bks.py` script.
 
 # Results:
 
@@ -189,7 +190,7 @@ to help show the difference in means for all of the different sets of data.
 
 Overall, it seems there is a slight change in review scores over time based on the overall
 difference in review scores reported before and after the release of a film. The change, however,
-is a rather small (.06 of a 'star'), difference. Interestingly, it seems the closer you get to the
+is a rather small (.06 of a 'star') difference. Interestingly, it seems the closer you get to the
 day of release, the magnitude of the difference increases, with the three month section of the data
 having the largest difference between before and after the film. Interesting though it may be, it's
 possible that this may be due to the difference in sample sizes between the before and after
@@ -202,6 +203,13 @@ least not an effect that warrants further investigation into how an author's oth
 are effected by the release of a film.
 
 Others using Goodreads.com as a sample should be aware of the potential skew within the data,
-mentioned in the Results section of this writeup, and should consider that skew when working out
-their final analysis. The low differences in means in this particular project could be attributable
-to this effect, seen very clearly in the data that was gathered. 
+mentioned in the Results (Overall) section of this writeup, and should consider that skew when
+working out their final analysis. The low differences in means in this particular project could be
+attributable to this effect, seen very clearly in the data that was gathered.
+
+Another interesting project that could come out of these findings would be to see if one could
+train a model to predict based only on review data if a book had been adapted to the screen. Other
+variables to consider to improve upon this project in future iterations would be to look at volume
+of reviews over a given period of time, which could indicate that although a book isn't reviewing
+better, it could be gaining popularity. This sort of analysis would require access to the entire
+review dataset from Goodreads.com which is beyond the scope of this particular project.

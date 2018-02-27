@@ -222,6 +222,6 @@ database must be generated via the scripts `scp_bks.py` and `imdb_release.py`.
 
 #### *This script gives as output*:
 
-Outputs to the console the mean, std, n, and ttest for each subdivision of time. 
+Outputs to the console the mean, std, n, and ttest for each subdivision of time.
 
 #### Notes, Future, etc:
