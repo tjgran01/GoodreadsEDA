@@ -15,7 +15,7 @@ short of the bar that was set by the work from which the film drew it's inspirat
 
 This concept isn't foreign to those outside of reading circles. It is well known
 amongst literary publishers that an upcoming film or television program based off
-of a book will translate to a large uptick in sales < citation needed >. People often
+of a book will translate to a large uptick in sales [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/). People often
 wish to read the original version of the story before seeing the film, or television
 show, in order to compare the merits or both the original and adaptation. A reader
 may also wish to get a deeper version of the story with the book compared to the
@@ -25,9 +25,9 @@ It comes as a surprise when a movie is better received than it's source material
 (critically speaking, that is), so much so that this phenomenon requires further
 investigation. Do we *actually* view the book as better than the film? And
 if so, then *why?* or in *what way* to we view the book as a more valid
-version of the story? Though there is a vast theoretical literature explaining why
+version of the story? Though there is theoretical literature explaining why
 this phenomenon might be the case, few efforts using publicly avilable data have
-corroborated these claims < citation needed >.
+corroborated these claims.
 
 The project aims investigate a small portion of this overarching question. Namely,
 does the creation of a film or television show have a significant impact on how
@@ -131,8 +131,6 @@ the screen adaptation was received.
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
 
-![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
-
 |Review Score|# of Scores|        
 |---|---|
 |5.0|2986|
@@ -140,6 +138,8 @@ The mean review score of all of the original books mentioned in the main `README
 |3.0|1240|
 |2.0|621|
 |1.0|371|
+
+![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
 As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
 all reviews in the dataset being either a four or a five. A reason for this might be that people
@@ -162,7 +162,7 @@ were evenly or normally distributed.
 |-----------------|-------|-------|-------|------|
 | Mean Before     | 4.11  | 3.98  | 3.89  | 3.88 |
 | Mean After      | 3.93  | 3.89  | 3.84  | 3.95 |
-| Mean Difference | -0.18 | -0.08 | -0.05 | 0.06 |
+| **Mean Difference** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
 | Std. Before     | 1.08  | 1.17  | 1.2   | 1.20 |
 | Std. After      | 1.17  | 1.16  | 1.17  | 1.09 |
 | T-Statistic     | -1.83 | -1.17 | -0.94 | 2.42 |
