@@ -115,13 +115,9 @@ after, and three months before the movie's release against three months after.
 
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
-<table style="width:100%">
-  <tr>
-    <th>Data</th>
-    <th>Chart</th>
-  </tr>
-  <tr>
-    <td>
+
+![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
+
 |Review Score|# of Scores|        
 |---|---|
 |5.0|2986|
@@ -129,17 +125,28 @@ The mean review score of all of the original books mentioned in the main `README
 |3.0|1240|
 |2.0|621|
 |1.0|371|
-    </td>
-    <td>
-      <img src="https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_sco.png">
-    </td>
-  <tr>
-</table>
 
+As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
+all reviews in the dataset being either a four or a five. A reason for this might be that people
+only feel inclined to review a book once they have finished it, and considering the time investment
+involved in finishing a book, if someone does not like a book they are unlikely to finish it and
+unlikely to leave a negative review of it. If this is the case then this positive skew should be
+expected across all reviews on Goodreads.com. Another possibility for the existence of this positive
+skew could be that since all of these books were adapted into films, they were presumably well
+received amongst readers prior to the film's release, making the production of the film less risky
+of an investment for the studio involved.
 
-![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_sco.png)
+Whatever the case may be for the existence of this positive skew, keeping it in mind can help to
+conceptualize what variances in scores overtime might mean. If an average review score for a period
+of time drops from 3.4 to 3.2, this could be seen as more significant a change than if the scores
+were evenly or normally distributed.
+
+## Individual Books.
 
 <small>Figure 1-1</small>
 ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+**Above: Four Line Charts indicating a particular book's rolling review score from one year before
+to one year after a screen adaptation's release date. The orange, solid, horizontal line indicates
+the release date of a screen adaptation.**
 
 # Discussion
