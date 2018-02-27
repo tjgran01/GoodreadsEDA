@@ -149,31 +149,3 @@ print(f"Std. review score after movie release: {df_after_3mo['review_score'].std
 print(f"T-Test (t-statistic): {ttest_ind(df_after_3mo['review_score'], df_before_3mo['review_score'])}")
 print(f"n Before: {df_before_3mo.shape[0]}")
 print(f"n After: {df_after_3mo.shape[0]}")
-# Plotting Parameters
-
-# x = df_before.index
-# y = df_before["review_score_rolling"]
-# x1 = df_after.index
-# y1 = df_after["review_score_rolling"]
-#
-#
-# plt.plot(x, y)
-# plt.plot(x1, y1)
-#
-# plt.yticks(np.arange(2.5, 5.5, .5)) # books are seldom given a score < 3.
-# plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
-#
-# # plot release date of movie as a line and label it.
-# plt.axvline(x=mv_release, color="#f99f75")
-# mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
-# plt.text(mv_release_datetime + timedelta(days=10), 4,
-#                                          'Movie Release Date',
-#                                          rotation=90,
-#                                          color='#767a78')
-#
-# plt.xlabel("Year")
-# plt.xlim(mv_release_datetime - relativedelta(years=1),
-#          mv_release_datetime + relativedelta(years=1))
-# plt.title(f"Review Scores of book list over time.")
-# sns.despine()
-# plt.show()

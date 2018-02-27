@@ -11,7 +11,7 @@ plt.style.use('seaborn-pastel')
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
 import seaborn as sns
-sns.set_style("white")
+sns.set_style("ticks")
 
 def get_mv_release(bk_m):
     try:
@@ -94,9 +94,11 @@ for i, titl in enumerate(movie_titl):
                                                  color='#767a78')
 
         plt.xlabel("Year")
+        plt.xticks(rotation=45)
         plt.xlim(mv_release_datetime - relativedelta(years=1),
                  mv_release_datetime + relativedelta(years=1))
         plt.title(f"Review Scores of '{bk}' over time.")
+        plt.subplots_adjust(bottom=0.2)
         sns.despine()
         plt.show()
     except ValueError as e:
