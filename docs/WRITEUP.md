@@ -117,7 +117,7 @@ The mean review score of all of the original books mentioned in the main `README
 3.92 (std=1.13). With the distribution of scores below:
 
 |Review Score|# of Scores|
-|---|:---:|---:|
+|---|---|
 |5.0|2986|
 |4.0|2618|
 |3.0|1240|
