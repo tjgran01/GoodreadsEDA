@@ -95,6 +95,6 @@ located within `scp_bks.py`'s directory.
 # Results
 
 <small>Figure 1-1</small>
-![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks's.png)
+![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
 
 # Discussion
