@@ -4,27 +4,24 @@ plt.style.use("seaborn-white")
 
 scores = [5, 4, 3, 2, 1]
 amts = [2986, 2618, 1240, 621, 371]
+
+mean_diffs = [-0.18268497330282196, -0.08435934144595558, -0.04966431623099199,
+              0.06767546411187286]
+mean_x = ["a. 3mo", "b. 6mo", "c. 1yr", "d. All"]
+
 all_scores = []
 
-for i, amt in enumerate(amts):
-    for x in range(0, amt):
-        if i == 0:
-            all_scores.append(5)
-        elif i == 1:
-            all_scores.append(4)
-        elif i == 2:
-            all_scores.append(3)
-        elif i == 3:
-            all_scores.append(2)
-        elif i == 4:
-            all_scores.append(1)
-        else:
-            print("Something must have happened.")
+# plt.bar(scores, amts, color="#adcaea", edgecolor="#96afd9", linewidth="3")
+# plt.title("Distribution of Review Scores")
+# plt.xlabel("Review Score")
+# plt.ylabel("Number of Reviews")
+# sns.despine()
+# plt.show()
 
-
-plt.bar(scores, amts, color="#adcaea", edgecolor="#96afd9", linewidth="3")
-plt.title("Distribution of Review Scores")
-plt.xlabel("Review Score")
-plt.ylabel("Number of Reviews")
+plt.plot(mean_x, mean_diffs, marker="o", color="#adcaea")
+plt.title("Changes in Mean Review Scores \nBefore and After Movie Release \n(Scale of 1-5)")
+plt.ylabel("Change in Mean Review Score")
+plt.xlabel("Timeframe")
+plt.grid(True)
 sns.despine()
 plt.show()

@@ -111,6 +111,21 @@ after, and three months before the movie's release against three months after.
 
 # Results:
 
+## Individual Books.
+
+![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+
+*Above: Four Line Charts indicating a particular book's rolling review score (n=20) from one
+year before to one year after a screen adaptation's release date. The orange, solid, horizontal
+line indicates the release date of a screen adaptation.*
+
+Visualizing certain books around the time of their release date did suggest some interesting trends.
+Oftentimes the review scores of a book would begin to dip a few months before the release of a
+screen adaptation and then spike shortly after the release of the film. In the aggregate, however,
+this trend vanished. Perhaps there are some similarities in these books that follow this pattern
+that were not able to be explored via the current dataset, such as genre of the book, or how well
+the screen adaptation was received.
+
 ## Overall:
 
 The mean review score of all of the original books mentioned in the main `README.md` was:
@@ -122,13 +137,13 @@ The mean review score of all of the original books mentioned in the main `README
 |---|---|
 |5.0|2986|
 |4.0|2618|
-|3.0|1240| ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+|3.0|1240|
 |2.0|621|
 |1.0|371|
 
 As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
 all reviews in the dataset being either a four or a five. A reason for this might be that people
-only feel inclined to review a book once they have finished it, and considering the time investment
+only feel inclined to review a book once they have finished it. Considering the time investment
 involved in finishing a book, if someone does not like a book they are unlikely to finish it and
 unlikely to leave a negative review of it. If this is the case then this positive skew should be
 expected across all reviews on Goodreads.com. Another possibility for the existence of this positive
@@ -141,13 +156,17 @@ conceptualize what variances in scores overtime might mean. If an average review
 of time drops from 3.4 to 3.2, this could be seen as more significant a change than if the scores
 were evenly or normally distributed.
 
-## Individual Books.
+## Before and After Movie Releases:
 
-![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
+*Above: A line chart plotting the difference in average review scores of different time periods
+before and after a book's release (3mo, 6mo, 1yr, and All Reviews). Values in the red section of
+the chart indicate that the score was negative, or that the average review score for that timeframe
+was **lower** following the film's release than prior. Values in green indicate that the average
+review score for that time frame was positive, or that the average review score for that
+timeframe was **higher** following the film's release than prior.
 
-*Above: Four Line Charts indicating a particular book's rolling review score (n=20) from one
-year before to one year after a screen adaptation's release date. The orange, solid, horizontal
-line indicates the release date of a screen adaptation.*
+
 
 
 # Discussion
