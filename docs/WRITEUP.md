@@ -118,11 +118,11 @@ The mean review score of all of the original books mentioned in the main `README
 
 ![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
-|Review Score|# of Scores|Chart|        
-|------------|-----------|-----|
-|5.0|2986|![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)|
+|Review Score|# of Scores|        
+|---|---|
+|5.0|2986|
 |4.0|2618|
-|3.0|1240|
+|3.0|1240| ![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
 |2.0|621|
 |1.0|371|
 
