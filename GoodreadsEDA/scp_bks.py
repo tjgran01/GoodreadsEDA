@@ -49,7 +49,7 @@ def replace_double_quotes(string):
     return(string)
 
 
-def create_review_table():
+def create_review_table(c):
     """Creates a table called "Reviews" in the reviews.db databse if it doesn't
     already exist. If "Reviews" does exists, it informs the user that it will
     append the current database."""
@@ -78,7 +78,7 @@ def click_next_review_page(driver):
         driver.execute_script("arguments[0].click()", next_link)
         print("Waiting to load page.. ..")
         time.sleep(3.5)
-        page_count += 1
+        return True
     except:
         print("Could Not Find a link!")
         return False
@@ -115,10 +115,10 @@ def get_individual_review(review):
         score = "None"
     # Convert Score to Number Value
     score = scores_to_numbers(score)
-    print(f"{i + 1} | {user} | {date} | {score}")
-    return (user. date, score)
+    print(f"| {user} | {date} | {score}")
+    return (user, date, score)
 
-def insert_into_review_table(author, title, url,
+def insert_into_review_table(c, author, title, url,
                              score, user, date):
     """Inserts all of the avilable data pulled from the review in to the "Review"
     table in the databse."""
@@ -131,7 +131,7 @@ def insert_into_review_table(author, title, url,
                      VALUES ("{author}", "{title}",
                      "{url}", "{score}",
                      "{user}", "{date}"
-                     )""").
+                     )""")
     except sqlite3.OperationalError as e:
         print(e)
         c.execute(f"""INSERT INTO Reviews (
@@ -142,7 +142,6 @@ def insert_into_review_table(author, title, url,
                  "{url}", "{score}",
                  "invalid_username", "{date}"
                  )""")
-    conn.commit()
 
 
 def main():
@@ -158,7 +157,7 @@ def main():
     # Connect to db, and create new table "Reviews"
     conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
     c = conn.cursor()
-    create_review_table()
+    create_review_table(c)
 
     for entry in book_urls:
         author = entry[0]
@@ -177,24 +176,27 @@ def main():
         # book's page at a time.
         for x in range(0, 10):
             print_pg_number(page_count)
-            # grab every review on the current page.
+            # grab every review on the current page and put it into "Reviews"
             reviews = driver.find_elements_by_class_name("reviewHeader")
-
             for i, review in enumerate(reviews):
                 user, date, score = get_individual_review(review)
-                insert_into_review_table(author, title, url,
+                insert_into_review_table(c, author, title, url,
                                          score, user, date)
+                conn.commit()
+
             link_found = click_next_review_page(driver)
+
             if not link_found:
                 break
             elif len(reviews) < 30:
                 break
             else:
+                page_count += 1
                 continue
 
         driver.close()
     conn.close()
-    
+
 
 if __name__ == "__main__":
     main()

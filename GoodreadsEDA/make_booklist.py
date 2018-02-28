@@ -27,10 +27,11 @@ def get_auth_bks(url):
     return auth_bks
 
 
-def write_to_csv(out_file, auth_bks, auth_name):
+def write_to_csv(out_file, auth_bks, auth_name, append=True):
     writer = csv.writer(out_file, delimiter=",")
     # Write header to .csv file.
-    writer.writerow(["Author_Name", "Book_Title", "Goodreads_Link"])
+    if not append:
+        writer.writerow(["Author_Name", "Book_Title", "Goodreads_Link"])
     # Write all of the boot data.
     for index, row in enumerate(auth_bks):
         info = [auth_name,
@@ -50,7 +51,7 @@ def main():
         # Create booksnlinks.csv if it doesn't exist already.
         if not os.path.exists(f"{os.getcwd()}/csv_files/booksnlinks.csv"):
             with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "w") as out_file:
-                write_to_csv(out_file, auth_bks, auth_name)
+                write_to_csv(out_file, auth_bks, auth_name, append=False)
         else:
             with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "a") as out_file:
                 write_to_csv(out_file, auth_bks, auth_name)
@@ -58,7 +59,7 @@ def main():
     print("All done.")
     print(f"File exported to: {os.getcwd()}/csv_files/booksnlinks.csv")
     print("-" * 80)
-    
+
 
 if __name__ == "__main__":
     main()
