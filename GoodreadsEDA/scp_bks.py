@@ -186,9 +186,7 @@ def main():
 
             link_found = click_next_review_page(driver)
 
-            if not link_found:
-                break
-            elif len(reviews) < 30:
+            if not link_found or len(reviews) < 30:
                 break
             else:
                 page_count += 1
