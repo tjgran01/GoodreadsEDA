@@ -15,7 +15,7 @@ short of the bar that was set by the work from which the film drew it's inspirat
 
 This concept isn't foreign to those outside of reading circles. It is well known
 amongst literary publishers that an upcoming film or television program based off
-of a book will translate to a large uptick in sales( [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/). People often)
+of a book will translate to a large uptick in sales( [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/)). People often
 wish to read the original version of the story before seeing the film, or television
 show, in order to compare the merits or both the original and adaptation. A reader
 may also wish to get a deeper version of the story with the book compared to the

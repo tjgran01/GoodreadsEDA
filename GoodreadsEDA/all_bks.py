@@ -5,15 +5,15 @@ import os
 from datetime import datetime
 from scipy.stats import ttest_ind
 import sys
-
-import matplotlib.pyplot as plt
-plt.style.use('seaborn-pastel')
-import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
-import seaborn as sns
-sns.set_style("white")
+
+from lists import movie_titl
 
 def get_mv_release(bk_m):
+    """Gathers the movie release data for a corresponding book title.
+
+    IN: bk_m (book title)
+    OUT: df_rel["release_date"][0] (Release Date of Movie)"""
     try:
         df_rel = pd.read_sql_query(f"""SELECT * FROM Release_Dates
                                        WHERE book_title="{bk_m}"
@@ -23,20 +23,6 @@ def get_mv_release(bk_m):
         print(f"{e} \n")
         print("""Hmm... it looks as though the program cannot find the
 Release_Date table... ... did you run imdb_release.py yet?""")
-
-
-n_reviews = 20
-
-movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
-              "Call Me By Your Name", "Everything, Everything",
-              "Brooklyn", "A Man Called Ove",
-              "Miss Peregrine’s Home for Peculiar Children",
-              "The Girl on the Train", "The Light Between Oceans",
-              "The 5th Wave", "Still Alice", "The DUFF",
-              "Beasts of No Nation", "The Family Fang",
-              "This Is Where I Leave You", "Me and Earl and the Dying Girl",
-              "The Handmaid's Tale", "The Dinner",
-              "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
 # Create empty df to append each book to after preprocessing.
 df_all = pd.DataFrame()
@@ -77,16 +63,18 @@ for i, titl in enumerate(movie_titl):
     # drop rows with NaN values in them.
     df.dropna(inplace=True)
 
-    # take rolling average of every fifteen review scores.
+    # take rolling average of review scores.
     df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
                                                             center=False).mean()
 
     df_all = df_all.append(df)
 
+# Print out of info about all data
 print(f"Mean review score: {df_all['review_score'].mean()}")
 print(f"Std review score: {df_all['review_score'].std()}")
 print(df_all["review_score"].value_counts())
 
+# Create a Column to split DataFrame for each of the different time intervals.
 df_all["year_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(years=1))
 df_all["year_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(years=1))
 df_all["6mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=6))
@@ -94,6 +82,7 @@ df_all["6mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.Dat
 df_all["3mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=3))
 df_all["3mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(months=3))
 
+# Split the large DataFrame based on the values calulated before.
 df_before = df_all[df_all.index <= df_all["movie_release"]]
 df_after = df_all[df_all.index > df_all["movie_release"]]
 
@@ -105,8 +94,6 @@ df_after_6mo = df_after[df_after.index <= df_after["6mo_after_release"]]
 
 df_before_3mo = df_before[df_before.index >= df_before["3mo_before_release"]]
 df_after_3mo = df_after[df_after.index <= df_after["3mo_after_release"]]
-
-
 
 # Report Stats.
 print("-" * 90)

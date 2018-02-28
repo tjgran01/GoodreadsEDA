@@ -49,129 +49,152 @@ def replace_double_quotes(string):
     return(string)
 
 
-# Get a list of all the urls for the books by the authors supplied from
-# make_booklist.py.
-book_urls = get_book_urls()
+def create_review_table():
+    """Creates a table called "Reviews" in the reviews.db databse if it doesn't
+    already exist. If "Reviews" does exists, it informs the user that it will
+    append the current database."""
 
-# Options for the Chrome driver, so Chrome operates without calling a window.
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-
-# Create sqlite3 cursor
-conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-c = conn.cursor()
-
-# If no database exists, create one.
-try:
-    c.execute(f"""CREATE TABLE Reviews (
-                  book_auth TEXT(100) NOT NULL,
-                  book_title TEXT(100) NOT NULL,
-                  book_url TEXT(9999) NOT NULL,
-                  review_score INT(100),
-                  user_name TEXT(100) NOT NULL,
-                  review_date TEXT(100) NOT NULL
-                  );""")
-except sqlite3.OperationalError as e:
-    print("Table already exists. The program will append the current table.")
+    try:
+        c.execute(f"""CREATE TABLE Reviews (
+                      book_auth TEXT(100) NOT NULL,
+                      book_title TEXT(100) NOT NULL,
+                      book_url TEXT(9999) NOT NULL,
+                      review_score INT(100),
+                      user_name TEXT(100) NOT NULL,
+                      review_date TEXT(100) NOT NULL
+                      );""")
+    except sqlite3.OperationalError as e:
+        print("Table already exists. The program will append the current table.")
 
 
-# Remove Header row From booksnlinks.csv
-book_urls.pop(0)
+def click_next_review_page(driver):
+    """Finds a link on the page that loads the next set of thirty reviews. If
+    it is unable to find the link it tells the user no link was found and allows
+    the program to move on to the next book in the list."""
 
-for entry in book_urls:
-    author = entry[0]
-    title = entry[1]
-    url = entry[2]
+    print("clicking link!")
+    try:
+        next_link = driver.find_element_by_class_name("next_page")
+        driver.execute_script("arguments[0].click()", next_link)
+        print("Waiting to load page.. ..")
+        time.sleep(3.5)
+        page_count += 1
+    except:
+        print("Could Not Find a link!")
+        return False
+
+
+def print_bk_info(author, title, url):
+    """Prints the information to the console about the book the scrapper is
+    currently gathering data for."""
 
     print(author, title)
     print("-" * 50)
     print(url)
     print("-" * 50)
 
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(url)
 
-    page_count = 1
-    # Goodreads keeps a collection of 10 pages of 30 reviews available on the
-    # book's page at a time.
+def print_pg_number(page_count):
+    """Prints information to the console about how many pages into the scraping
+    the scraper currently is."""
 
-    # A smarter way would be to check if current page reviews match the last
-    # page, reviews, breaking a while loop if this is the case.
-    for x in range(0, 10):
-        print("-" * 50)
-        print(f"Page: {page_count}")
-        print("-" * 50)
+    print("-" * 50)
+    print(f"Page: {page_count}")
+    print("-" * 50)
 
-        # grab every review on the current page.
-        reviews = driver.find_elements_by_class_name("reviewHeader")
 
-        for i, review in enumerate(reviews):
-            user = review.find_element_by_class_name("user").text
-            date = review.find_element_by_class_name("reviewDate").text
-            try:
-                score = review.find_element_by_class_name(" staticStars").text
-            except NoSuchElementException as e:
-                print("No Score Given")
-                score = "None"
-            # Convert Score to Number Value
-            score = scores_to_numbers(score)
-            print(f"{i + 1} | {user} | {date} | {score}")
+def get_individual_review(review):
+    """Grabs the user, date, and score information from an indivdual review"""
 
-            # Gets rid of escaping issues caused by book titles having ""
-            # chars in them.
-            if '"' in title:
-                title = replace_double_quotes(title)
-            try:
-                c.execute(f"""INSERT INTO Reviews (
-                             book_auth, book_title,
-                             book_url, review_score,
-                             user_name, review_date)
-                             VALUES ("{author}", "{title}",
-                             "{url}", "{score}",
-                             "{user}", "{date}"
-                             )""")
-            # The issue below may have been fixed at this point now that the
-            # code as been reworked. I don't recall ever seeing this message
-            # printed in my last running of the program, but I'll keep it for
-            # now just in case.
+    user = review.find_element_by_class_name("user").text
+    date = review.find_element_by_class_name("reviewDate").text
+    try:
+        score = review.find_element_by_class_name(" staticStars").text
+    except NoSuchElementException as e:
+        print("No Score Given")
+        score = "None"
+    # Convert Score to Number Value
+    score = scores_to_numbers(score)
+    print(f"{i + 1} | {user} | {date} | {score}")
+    return (user. date, score)
 
-            # Some usernames have non ASCI text, this will throw an
-            # OperationalError. to stop the program from halting just Mark
-            # user_name as invalid, as it will not be used in the analysis.
-            except sqlite3.OperationalError as e:
-                print(e)
-                c.execute(f"""INSERT INTO Reviews (
-                         book_auth, book_title,
-                         book_url, review_score,
-                         user_name, review_date)
-                         VALUES ("{author}", "{title}",
-                         "{url}", "{score}",
-                         "invalid_username", "{date}"
-                         )""")
-            conn.commit()
+def insert_into_review_table(author, title, url,
+                             score, user, date):
+    """Inserts all of the avilable data pulled from the review in to the "Review"
+    table in the databse."""
 
-        print("clicking link!")
-        try:
-            next_link = driver.find_element_by_class_name("next_page")
-            driver.execute_script("arguments[0].click()", next_link)
-            print(driver.find_element_by_class_name("next_page").text)
-            print("sleeping... ...")
-            # after experimenting with a few different sleep times, this
-            # time (3.5) seems to have allowed the page the proper amount of
-            # time to load.
-            time.sleep(3.5)
-            page_count += 1
-        # keep an eye on this. might just need to adjust sleep timeself.
-        except:
-            print("Could Not Find a link!")
-            break
+    try:
+        c.execute(f"""INSERT INTO Reviews (
+                     book_auth, book_title,
+                     book_url, review_score,
+                     user_name, review_date)
+                     VALUES ("{author}", "{title}",
+                     "{url}", "{score}",
+                     "{user}", "{date}"
+                     )""").
+    except sqlite3.OperationalError as e:
+        print(e)
+        c.execute(f"""INSERT INTO Reviews (
+                 book_auth, book_title,
+                 book_url, review_score,
+                 user_name, review_date)
+                 VALUES ("{author}", "{title}",
+                 "{url}", "{score}",
+                 "invalid_username", "{date}"
+                 )""")
+    conn.commit()
 
-        # Pages have a max len of 30 reviews. Though this won't catch all
-        # cases, (if total reviews < 150 and % 30 == 0) this is a quick and
-        # dirty way of avioding clicking on a link that leads nowhere for a book
-        # with < 150 reviews.
-        if len(reviews) < 30:
-            break
 
-    driver.close()
-conn.close()
+def main():
+    # Get a list of all the urls for the books by the authors supplied from
+    # make_booklist.py, and remove the header row.
+    book_urls = get_book_urls()
+    book_urls.pop(0)
+
+    # Options for the Chrome driver, so Chrome operates without calling a window.
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+
+    # Connect to db, and create new table "Reviews"
+    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
+    c = conn.cursor()
+    create_review_table()
+
+    for entry in book_urls:
+        author = entry[0]
+        title = entry[1]
+        if '"' in title:
+            title = replace_double_quotes(title)
+        url = entry[2]
+
+        print_bk_info(author, title, url)
+
+        driver = webdriver.Chrome(chrome_options=options)
+        driver.get(url)
+
+        page_count = 1
+        # Goodreads keeps a collection of 10 pages of 30 reviews available on the
+        # book's page at a time.
+        for x in range(0, 10):
+            print_pg_number(page_count)
+            # grab every review on the current page.
+            reviews = driver.find_elements_by_class_name("reviewHeader")
+
+            for i, review in enumerate(reviews):
+                user, date, score = get_individual_review(review)
+                insert_into_review_table(author, title, url,
+                                         score, user, date)
+            link_found = click_next_review_page(driver)
+            if not link_found:
+                break
+            elif len(reviews) < 30:
+                break
+            else:
+                continue
+
+        driver.close()
+    conn.close()
+    
+
+if __name__ == "__main__":
+    main()

@@ -5,13 +5,15 @@ import os
 from datetime import datetime
 from datetime import timedelta
 import sys
-
+# plotting imports
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-pastel')
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
 import seaborn as sns
 sns.set_style("ticks")
+# my imports
+from lists import movie_titl
 
 def get_mv_release(bk_m):
     try:
@@ -26,17 +28,6 @@ Release_Date table... ... did you run imdb_release.py yet?""")
 
 
 n_reviews = 20
-
-movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
-              "Call Me By Your Name", "Everything, Everything",
-              "Brooklyn", "A Man Called Ove",
-              "Miss Peregrine’s Home for Peculiar Children",
-              "The Girl on the Train", "The Light Between Oceans",
-              "The 5th Wave", "Still Alice", "The DUFF",
-              "Beasts of No Nation", "The Family Fang",
-              "This Is Where I Leave You", "Me and Earl and the Dying Girl",
-              "The Handmaid's Tale", "The Dinner",
-              "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
 
 for i, titl in enumerate(movie_titl):
     try:
