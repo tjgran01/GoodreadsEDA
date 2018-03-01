@@ -2,7 +2,7 @@
 1. [Overview](#overview)
     - [To Contribute](#to_contribute)
 2. [Scripts](#scripts)
-    - [make_booklist.py](#make_booklistpy)
+    - [mk_bklst.py](#make_booklistpy)
     - [scp_bks.py](#scp_bkspy)
     - [imdb_release.py](#imdb_releasepy)
     - [bk_plt.py](#bk_pltpy)
@@ -53,7 +53,7 @@ For questions or suggestions on formatting, etc, feel free to contact Trevor Gra
 
 # Scripts
 
-## make_booklist.py
+## mk_bklst.py
 
 ##### Created: 1/2018
 ##### Created by: Trevor Grant
@@ -82,7 +82,7 @@ https://www.goodreads.com/author/list/author_id.author_name
   "`author_name`'s books."
   - Copy the page url.
 
-2. Navigate to `/GoodreadsEDA/make_booklist.py`.
+2. Navigate to `/GoodreadsEDA/mk_bklst.py`.
 
 3. In the top of the file there is a list of urls called `auth_urls`. Replace
 the current values in this list with the author's you are interested in getting
@@ -120,7 +120,7 @@ https://www.seleniumhq.org/
 
 #### *This file takes as input*:
 
-The .csv file created by `make_booklist.py`.
+The .csv file created by `mk_bklst.py`.
 
 #### *This script gives as output*:
 
@@ -166,8 +166,8 @@ of the movie.
 The original hope with this script was to be able to simply `LEFT JOIN` on the movie title in order
 to get a movie release for each book, but because books sometimes have slightly different names
 then the films, this didn't work out in practice. If you are attempting to use this project as a
-baseline for your own analysis. Try to give the two tables a common key so that a merge can actually
-be successful.
+baseline for your own analysis. Try to give the two tables a common key so that a merge can
+actually be successful.
 
 ## bk_plt.py
 
@@ -222,6 +222,6 @@ database must be generated via the scripts `scp_bks.py` and `imdb_release.py`.
 
 #### *This script gives as output*:
 
-Outputs to the console the mean, std, n, and ttest for each subdivision of time.
+Outputs to the console the mean, std, n, and t-test for each subdivision of time.
 
 #### Notes, Future, etc:

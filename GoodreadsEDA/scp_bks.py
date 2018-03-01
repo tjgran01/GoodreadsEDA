@@ -9,7 +9,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 def get_book_urls():
-    """Loads the export file from 'make_booklist.py', and gets the urls of all
+    """Loads the export file from 'mk_bklst.py', and gets the urls of all
     of the books to pull reviews for."""
 
     with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "r") as in_file:
@@ -146,7 +146,7 @@ def insert_into_review_table(c, author, title, url,
 
 def main():
     # Get a list of all the urls for the books by the authors supplied from
-    # make_booklist.py, and remove the header row.
+    # mk_bklst.py, and remove the header row.
     book_urls = get_book_urls()
     book_urls.pop(0)
 

@@ -9,6 +9,8 @@ from dateutil.relativedelta import relativedelta
 
 from lists import movie_titl
 
+n_reviews = 20
+
 def get_mv_release(bk_m):
     """Gathers the movie release data for a corresponding book title.
 
@@ -23,6 +25,22 @@ def get_mv_release(bk_m):
         print(f"{e} \n")
         print("""Hmm... it looks as though the program cannot find the
 Release_Date table... ... did you run imdb_release.py yet?""")
+
+
+def create_even_samples(df, df2):
+    """Ballances the data so that the before and after values have an equal #
+    of sample sies."""
+
+    sample_diff = df.shape[0] - df2.shape[0]
+    if sample_diff > 0:
+        df = df.sample(df2.shape[0])
+        return (df, df2)
+    elif sample_diff < 0:
+        df2 = df2.sample(df.shape[0])
+        return (df, df2)
+    else:
+        return (df, df2)
+
 
 # Create empty df to append each book to after preprocessing.
 df_all = pd.DataFrame()
@@ -94,6 +112,13 @@ df_after_6mo = df_after[df_after.index <= df_after["6mo_after_release"]]
 
 df_before_3mo = df_before[df_before.index >= df_before["3mo_before_release"]]
 df_after_3mo = df_after[df_after.index <= df_after["3mo_after_release"]]
+
+# Balance the data:
+
+df_after, df_before = create_even_samples(df_after, df_before)
+df_after_1yr, df_before_1yr = create_even_samples(df_after_1yr, df_before_1yr)
+df_after_6mo, df_before_6mo = create_even_samples(df_after_6mo, df_before_6mo)
+df_after_3mo, df_before_3mo = create_even_samples(df_after_3mo, df_before_3mo)
 
 # Report Stats.
 print("-" * 90)

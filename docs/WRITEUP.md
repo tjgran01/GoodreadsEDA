@@ -15,7 +15,7 @@ short of the bar that was set by the work from which the film drew it's inspirat
 
 This concept isn't foreign to those outside of reading circles. It is well known
 amongst literary publishers that an upcoming film or television program based off
-of a book will translate to a large uptick in sales( [Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/)). People often
+of a book will translate to a large uptick in sales ([Respers](http://marquee.blogs.cnn.com/2010/08/12/movies-based-on-books-increase-book-sales/)). People often
 wish to read the original version of the story before seeing the film, or television
 show, in order to compare the merits or both the original and adaptation. A reader
 may also wish to get a deeper version of the story with the book compared to the
@@ -57,21 +57,21 @@ After the authors had been chosen each of their individual https://www.goodreads
 pages were scraped to obtain the whole collection of books avilable on the site. The process was
 automated by:
 
-```/GoodreadsEDA/GoodreadsEDA/make_booklist.py```
+```/GoodreadsEDA/GoodreadsEDA/mk_bklst.py```
 
 The urls used were retrieved and coded manually. For an overview of how the urls were obtained see
 the "Inputting Your Own Authors" section in `README.md`.
 
-Future versions of this project may update make_booklist.py to allow for the author URLs to be
+Future versions of this project may update mk_bklst.py to allow for the author URLs to be
 obtained by automation, so that a user only need to input a list of authors in order for the program
-to run. `make_booklist.py` then outputs a .csv file which included the URLs to every book each
+to run. `mk_bklst.py` then outputs a .csv file which included the URLs to every book each
 author in the original author list had on avilable on Goodreads at that time. The .csv file is
 included in this repository, and can be found at:
 
 ```GoodreadsEDA/GoodreadsEDA/csv_files/booksnlinks.csv```
 
-For further documentation on `make_booklist.py`, see the `README.md` located within
-`make_booklist.py`'s directory.
+For further documentation on `mk_bklst.py`, see the `README.md` located within
+`mk_bklst.py`'s directory.
 
 After the entire booklist was created the public facing review data avilable for that book on
 Goodreads was then scraped and stored in an SQLite3 database. The resulting database is currently
@@ -80,7 +80,7 @@ located at:
 ```GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db```
 
 The process was automated via the `scp_bks.py` script, which took the .csv file created from
-`make_booklist.py`, visited the URL for each entry, and retrieved every review score, username, and
+`mk_bklst.py`, visited the URL for each entry, and retrieved every review score, username, and
 review date from each review avilable on the site at that time.
 
 Goodreads displays thirty reviews per page, and allows a user to view ten pages, totaling three
@@ -92,7 +92,7 @@ the scraped data. However, the three hundred publicly avilable reviews per book 
 the purposes of this project. For further documentation on `scp_bks.py`, see the `README.md`
 located within `scp_bks.py`'s directory. Movie or television releases were also scraped, albeit
 through a much less labor intensive process, via the `imdb_release.py` file, which iterated through
-the original movie titles, and searched imdb.com for the relevant release dates, and stored them in
+the original movie titles, searched imdb.com for the relevant release dates, and stored them in
 another table (Release_Dates) within the `reviews.db` database.
 
 After the database was formed individual books were plotted, along with their corresponding
@@ -106,9 +106,9 @@ effect (in any) a film adaptation may have had on the reception of the book.
 
 After the plots were generated, t-tests were performed between the mean review scores before and
 after the movie release date in four different timeframes: The entire timeframe, one year before
-the movie's release against one year after, six months before the movie's release against six months
-after, and three months before the movie's release against three months after. This process was
-accomplished using the `all_bks.py` script.
+the movie's release against one year after, six months before the movie's release against six
+months after, and three months before the movie's release against three months after. This process
+was accomplished using the `all_bks.py` script.
 
 # Results:
 
@@ -122,7 +122,7 @@ line indicates the release date of a screen adaptation.*
 
 Visualizing certain books around the time of their release date did suggest some interesting trends.
 Oftentimes the review scores of a book would begin to dip a few months before the release of a
-screen adaptation and then spike shortly after the release of the film. In the aggregate, however,
+screen adaptation and then spike shortly after the release of the film. However, in the aggregate
 this trend vanished. Perhaps there are some similarities in these books that follow this pattern
 that were not able to be explored via the current dataset, such as genre of the book, or how well
 the screen adaptation was received.
@@ -146,7 +146,7 @@ As mentioned earlier the overall results were heavily skewed towards positive ra
 all reviews in the dataset being either a four or a five. A reason for this might be that people
 only feel inclined to review a book once they have finished it. Considering the time investment
 involved in finishing a book, if someone does not like a book they are unlikely to finish it and
-unlikely to leave a negative review of it. If this is the case then this positive skew should be
+therefore unlikely to leave a negative review of it. If this is the case then this positive skew should be
 expected across all reviews on Goodreads.com. Another possibility for the existence of this positive
 skew could be that since all of these books were adapted into films, they were presumably well
 received amongst readers prior to the film's release, making the production of the film less risky
@@ -159,17 +159,17 @@ were evenly or normally distributed.
 
 ## Before and After Movie Releases:
 
-|                 | 3mo   | 6mo   | 1yr   | All  |
-|-----------------|-------|-------|-------|------|
-| Mean Before     | 4.11  | 3.98  | 3.89  | 3.88 |
-| Mean After      | 3.93  | 3.89  | 3.84  | 3.95 |
-| **Mean Difference** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
-| Std. Before     | 1.08  | 1.17  | 1.2   | 1.20 |
-| Std. After      | 1.17  | 1.16  | 1.17  | 1.09 |
-| T-Statistic     | -1.83 | -1.17 | -0.94 | 2.42 |
-| P-Value         | .06   | 0.24  | 0.35  | 0.02 |
-| N-Before        | 285   | 440   | 798   | 2519 |
-| N-After         | 635   | 635   | 1351  | 4744 |
+|                           | 3mo   | 6mo   | 1yr   | All  |
+|---------------------------|-------|-------|-------|------|
+| Mean Before (In Stars)    | 4.11  | 3.98  | 3.89  | 3.88 |
+| Mean After (In Stars)     | 3.93  | 3.89  | 3.84  | 3.95 |
+| **Mean Difference (In Stars)** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
+| Std. Before               | 1.08  | 1.17  | 1.2   | 1.20 |
+| Std. After                | 1.17  | 1.16  | 1.17  | 1.09 |
+| T-Statistic               | -1.83 | -1.17 | -0.94 | 2.42 |
+| P-Value                   | .06   | 0.24  | 0.35  | 0.02 |
+| N (Both)                  | 285   | 440   | 798   | 2519 |
+
 
 ![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
 
@@ -180,36 +180,47 @@ was **lower** following the film's release than prior. Values in green indicate 
 review score for that time frame was positive, or that the average review score for that
 timeframe was **higher** following the film's release than prior.*
 
-The final analysis involved taking the entire collection of books and computing both the mean
-and standard deviation for the scores that were submitted to Goodreads both before and after the
-release of the film, to see if any statistically significant differences could be found. The
-results of the computations can be found in the table above. A visualization was also created
-to help show the difference in means for all of the different sets of data.
+The final analysis involved taking the entire collection of books, splitting them into separate
+groups based on different times before and after the release of the film, and balancing the
+datasets to be of equal size (n), so that more accurate t-tests could be performed on the samples.
+The results of the computations can be found in the table above. A visualization was also created
+to help show the difference in means for all of the different sets of data. Values in red indicate
+that the change in mean was negative, or that books were reviews less favorably in the time after
+the release of the film compared to before.
+
+Overall, it appears that books are more favorably reviewed after the release of the film. The
+t-test results generated a t-statistic of 2.344 (p=.02).
 
 # Discussion
 
-Overall, it seems there is a slight change in review scores over time based on the overall
-difference in review scores reported before and after the release of a film. The change, however,
-is a rather small (.06 of a 'star') difference. Interestingly, it seems the closer you get to the
-day of release, the magnitude of the difference increases, with the three month section of the data
-having the largest difference between before and after the film. Interesting though it may be, it's
-possible that this may be due to the difference in sample sizes between the before and after
-reviews. In order to be sure that this phenomenon is real, a different dataset with similar
-properties would have to gathered and balanced to ensure that this is not just an artifact of
-this particular data.
+Although there seems to be a slight change in review scores over time based on the overall
+difference in review scores reported before and after the release of a film the change
+is a rather small (.06 of a 'star') difference. Though this difference could be considered
+statistically significant it is possible that there are other confounding factors generating the
+results seen in this analysis, especially taking into consideration that the review scores in this
+sample decreased with greater magnitude closer to the the release date of the film. In order to be
+certain that the release of a film has a *positive* impact on the reception of a book more
+investigation is needed, preferably with a control group of books that were not given a screen
+adaptation to rule out the possibility that average review scores increase over time regardless
+of whether or not they were given a screen adaptation.
 
 The findings posted above do not indicate that a clear effect exists over the entire dataset, at
-least not an effect that warrants further investigation into how an author's other book's reviews
-are effected by the release of a film.
+least not to a magnitude that warrants further investigation into how an author's other book's
+reviews are affected by the release of a film.
 
 Others using Goodreads.com as a sample should be aware of the potential skew within the data,
 mentioned in the Results (Overall) section of this writeup, and should consider that skew when
 working out their final analysis. The low differences in means in this particular project could be
-attributable to this effect, seen very clearly in the data that was gathered.
+attributable to this effect.
 
 Another interesting project that could come out of these findings would be to see if one could
 train a model to predict based only on review data if a book had been adapted to the screen. Other
 variables to consider to improve upon this project in future iterations would be to look at volume
 of reviews over a given period of time, which could indicate that although a book isn't reviewing
-better, it could be gaining popularity. This sort of analysis would require access to the entire
-review dataset from Goodreads.com which is beyond the scope of this particular project.
+better, it could be gaining popularity due to the film adaptation. Another project could be to
+perform a textual analysis, looking for certain words, or factoring word count in order to give a
+little more depth to the scores beyond the five point rating scale provided by Goodreads. A
+combination of the projects mentioned above may give better insights, or better results, than the
+ones found in this analysis. Though it should be mentioned that some of the above projects would
+likely require access to the entire review dataset from Goodreads.com which is beyond the scope of
+this particular project.
