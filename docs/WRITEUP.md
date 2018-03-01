@@ -133,6 +133,8 @@ the screen adaptation was received.
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
 
+![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
+
 |Review Score|# of Scores|        
 |---|---|
 |5.0|2986|
@@ -140,8 +142,6 @@ The mean review score of all of the original books mentioned in the main `README
 |3.0|1240|
 |2.0|621|
 |1.0|371|
-
-![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
 As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
 all reviews in the dataset being either a four or a five. A reason for this might be that people
