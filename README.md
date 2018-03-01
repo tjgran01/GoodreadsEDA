@@ -11,12 +11,22 @@ facing review information on Goodreads.com about each of that author's books int
 a sqlite3 database so that exploratory data analysis may be performed on the
 scraped data.
 
-Once the data has been scraped it is pulled into a pandas dataframe, where it
+Once the data has been scraped it is pulled into a pandas DataFrame, where it
 is then cleaned and organized by time, and visualized.
 
 **The Writeup for this project is located at:**
 
 `/docs/WRITEUP.md`
+
+## Requirements:
+
+Because of some string formatting stuff these scripts will need at least Python version 3.6
+to function properly (get with the times).
+
+Note that this has been tested only on MacOSX Sierra (don't get with the times when it come
+to High Sierra), but it should work in most MacOS and Linux environments.
+
+For further requirements see `requirements.txt`.
 
 ## EDA Questions.
 
@@ -53,14 +63,9 @@ and `scp_bks.py`, so to jump straight to the visualization you may simply run
 
 ### Inputting your own book for visualization.
 
-Currently `bk_plt.py` will create a visualization for the first book in the db:
-`GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db`. If you would like to view a
-graph for a different book you will need to edit `bk_plt.py`.
-
-To do so open up `bk_plt.py` and change the variable `bk` (assigned on line 9) to
-a title that current exists in the database and you will be given the plot for
-that title.
-
+Currently `bk_plt.py` will create a visualization for each book in the `movie_titl` list located
+in the file `lists.py`. If you would like to view a graph for a different book you will need to
+edit `lists.py` to reflect books in the current database.
 
 ## Current Author List:
 
@@ -109,7 +114,7 @@ https://www.goodreads.com/author/list/author_id.author_name
   "`author_name`'s books."
   - Copy the page url.
 
-2. Inside of this project navigate to `/GoodreadsEDA/mk_bklst.py`.
+2. Inside of this project navigate to `/GoodreadsEDA/lists.py`.
 
 3. In the top of the file there is a list of urls called `auth_urls`. Replace
 the current values in this list with the author's you are interested in getting

@@ -82,9 +82,9 @@ https://www.goodreads.com/author/list/author_id.author_name
   "`author_name`'s books."
   - Copy the page url.
 
-2. Navigate to `/GoodreadsEDA/mk_bklst.py`.
+2. Navigate to `/GoodreadsEDA/lists.py`.
 
-3. In the top of the file there is a list of urls called `auth_urls`. Replace
+3. In the bottom of the file there is a list of urls called `auth_urls`. Replace
 the current values in this list with the author's you are interested in getting
 review information for.
 
