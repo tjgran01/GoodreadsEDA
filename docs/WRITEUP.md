@@ -136,12 +136,12 @@ The mean review score of all of the original books mentioned in the main `README
 ![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
 |Review Score|# of Scores|        
-|---|---|
-|5.0|2986|
-|4.0|2618|
-|3.0|1240|
-|2.0|621|
-|1.0|371|
+|------------|-----------|
+|     5.0    |    2986   |
+|     4.0    |    2618   |
+|     3.0    |    1240   |
+|     2.0    |    621    |
+|     1.0    |    371    |
 
 As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
 all reviews in the dataset being either a four or a five. A reason for this might be that people
@@ -160,16 +160,16 @@ were evenly or normally distributed.
 
 ## Before and After Movie Releases:
 
-|                           | 3mo   | 6mo   | 1yr   | All  |
-|---------------------------|-------|-------|-------|------|
-| Mean Before (In Stars)    | 4.11  | 3.98  | 3.89  | 3.88 |
-| Mean After (In Stars)     | 3.93  | 3.89  | 3.84  | 3.95 |
+|                                |   3mo     |   6mo     |   1yr     |   All    |
+|--------------------------------|-----------|-----------|-----------|----------|
+| Mean Before (In Stars)         |   4.11    |   3.98    |   3.89    |   3.88   |
+| Mean After (In Stars)          |   3.93    |   3.89    |   3.84    |   3.95   |
 | **Mean Difference (In Stars)** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
-| Std. Before               | 1.08  | 1.17  | 1.2   | 1.20 |
-| Std. After                | 1.17  | 1.16  | 1.17  | 1.09 |
-| T-Statistic               | -1.83 | -1.17 | -0.94 | 2.42 |
-| P-Value                   | .06   | 0.24  | 0.35  | 0.02 |
-| N (Both)                  | 285   | 440   | 798   | 2519 |
+| Std. Before                    |   1.08    |   1.17    |   1.2     |   1.20   |
+| Std. After                     |   1.17    |   1.16    |   1.17    |   1.09   |
+| T-Statistic                    |   -1.83   |   -1.17   |   -0.94   |   2.42   |
+| P-Value                        |   .06     |   0.24    |   0.35    |   0.02   |
+| N (Both)                       |   285     |   440     |   798     |   2519   |
 
 
 ![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
