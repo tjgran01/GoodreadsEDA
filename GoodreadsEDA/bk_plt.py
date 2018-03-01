@@ -91,6 +91,7 @@ for i, titl in enumerate(movie_titl):
         plt.title(f"Review Scores of '{bk}' over time.")
         plt.subplots_adjust(bottom=0.2)
         sns.despine()
+        plt.savefig(f"{os.getcwd()}/../docs/img/{bk}Fig.png", dpi=600)
         plt.show()
     except ValueError as e:
         print(e)

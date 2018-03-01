@@ -114,11 +114,12 @@ This process was accomplished using the `all_bks.py` script.
 
 ## Individual Books.
 
-![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/FourFigs.png)
 
 *Above: Four Line Charts indicating a particular book's rolling review score (n=20) from one
 year before to one year after a screen adaptation's release date. The orange, solid, horizontal
-line indicates the release date of a screen adaptation.*
+line indicates the release date of a screen adaptation. For all single book figures created by
+the project visit: `/docs/img/...`*
 
 Visualizing certain books around the time of their release date did suggest some interesting trends.
 Oftentimes the review scores of a book would begin to dip a few months before the release of a
