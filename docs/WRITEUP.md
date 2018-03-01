@@ -104,11 +104,11 @@ that it was **rare** for the book to dip below an average score of three), as we
 plots to focus only on a year before and after the release of the movie to better highlight what
 effect (in any) a film adaptation may have had on the reception of the book.
 
-After the plots were generated, t-tests were performed between the mean review scores before and
-after the movie release date in four different timeframes: The entire timeframe, one year before
-the movie's release against one year after, six months before the movie's release against six
-months after, and three months before the movie's release against three months after. This process
-was accomplished using the `all_bks.py` script.
+After the plots were generated, independent t-tests were performed between the mean review scores
+before and after the movie release date in four different timeframes: The entire timeframe, one
+year before the movie's release against one year after, six months before the movie's release
+against six months after, and three months before the movie's release against three months after.
+This process was accomplished using the `all_bks.py` script.
 
 # Results:
 
