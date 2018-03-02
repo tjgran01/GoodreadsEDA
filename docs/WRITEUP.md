@@ -114,11 +114,14 @@ This process was accomplished using the `all_bks.py` script.
 
 ## Individual Books.
 
-![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/single_bks.png)
+![Figure1-1](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/FourFigs.png)
 
 *Above: Four Line Charts indicating a particular book's rolling review score (n=20) from one
 year before to one year after a screen adaptation's release date. The orange, solid, horizontal
-line indicates the release date of a screen adaptation.*
+line indicates the release date of a screen adaptation. For all single book figures created by
+the project visit: `/docs/img/...`*
+
+---
 
 Visualizing certain books around the time of their release date did suggest some interesting trends.
 Oftentimes the review scores of a book would begin to dip a few months before the release of a
@@ -132,13 +135,17 @@ the screen adaptation was received.
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
 
+---
+
 |Review Score|# of Scores|        
-|---|---|
-|5.0|2986|
-|4.0|2618|
-|3.0|1240|
-|2.0|621|
-|1.0|371|
+|------------|-----------|
+|     5.0    |    2986   |
+|     4.0    |    2618   |
+|     3.0    |    1240   |
+|     2.0    |    621    |
+|     1.0    |    371    |
+
+---
 
 ![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
@@ -159,17 +166,20 @@ were evenly or normally distributed.
 
 ## Before and After Movie Releases:
 
-|                           | 3mo   | 6mo   | 1yr   | All  |
-|---------------------------|-------|-------|-------|------|
-| Mean Before (In Stars)    | 4.11  | 3.98  | 3.89  | 3.88 |
-| Mean After (In Stars)     | 3.93  | 3.89  | 3.84  | 3.95 |
-| **Mean Difference (In Stars)** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
-| Std. Before               | 1.08  | 1.17  | 1.2   | 1.20 |
-| Std. After                | 1.17  | 1.16  | 1.17  | 1.09 |
-| T-Statistic               | -1.83 | -1.17 | -0.94 | 2.42 |
-| P-Value                   | .06   | 0.24  | 0.35  | 0.02 |
-| N (Both)                  | 285   | 440   | 798   | 2519 |
+---
 
+|                                |   3mo     |   6mo     |   1yr     |   All    |
+|--------------------------------|-----------|-----------|-----------|----------|
+| Mean Before (In Stars)         |   4.11    |   3.98    |   3.89    |   3.88   |
+| Mean After (In Stars)          |   3.93    |   3.89    |   3.84    |   3.95   |
+| **Mean Difference (In Stars)** | **-0.18** | **-0.08** | **-0.05** | **0.06** |
+| Std. Before                    |   1.08    |   1.17    |   1.2     |   1.20   |
+| Std. After                     |   1.17    |   1.16    |   1.17    |   1.09   |
+| T-Statistic                    |   -1.83   |   -1.17   |   -0.94   |   2.42   |
+| P-Value                        |   .06     |   0.24    |   0.35    |   0.02   |
+| N (Both)                       |   285     |   440     |   798     |   2519   |
+
+---
 
 ![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
 
@@ -179,6 +189,8 @@ the chart indicate that the score was negative, or that the average review score
 was **lower** following the film's release than prior. Values in green indicate that the average
 review score for that time frame was positive, or that the average review score for that
 timeframe was **higher** following the film's release than prior.*
+
+---
 
 The final analysis involved taking the entire collection of books, splitting them into separate
 groups based on different times before and after the release of the film, and balancing the
