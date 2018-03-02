@@ -38,7 +38,7 @@ def write_to_csv(out_file, auth_bks, auth_name, append=True):
     # Write header to .csv file.
     if not append:
         writer.writerow(["Author_Name", "Book_Title", "Goodreads_Link"])
-    # Write all of the boot data.
+    # Write all of the book data.
     for index in range(len(auth_bks)):
         info = [auth_name,
                 auth_bks[index].get_text()[1:-1],
@@ -61,11 +61,6 @@ def main():
         else:
             with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "w") as out_file:
                 write_to_csv(out_file, auth_bks, auth_name, append=False)
-
-    print("-" * 80)
-    print("All done.")
-    print(f"File exported to: {os.getcwd()}/csv_files/booksnlinks.csv")
-    print("-" * 80)
 
 
 if __name__ == "__main__":

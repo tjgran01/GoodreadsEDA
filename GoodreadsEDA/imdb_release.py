@@ -13,22 +13,12 @@ def create_release_table(c):
     already exist. If "Release_Dates" does exists, it informs the user that it will
     overwrite the current database."""
 
-    try:
-        c.execute("""CREATE TABLE Release_Dates (
-                     book_title TEXT(100) NOT NULL,
-                     movie_title TEXT(100) NOT NULL,
-                     release_date TEXT(100) NOT NULL
-                     );""")
-    except sqlite3.OperationalError:
-        traceback.print_exc()
-        c.execute("""DROP TABLE Release_Dates;""")
-        print("Table being overwritten")
-        c.execute("""CREATE TABLE Release_Dates (
-                     book_title TEXT(100) NOT NULL,
-                     movie_title TEXT(100) NOT NULL,
-                     release_date TEXT(100) NOT NULL
-                     );""")
-
+    c.execute("""DROP TABLE IF EXISTS Release_Dates;""")
+    c.execute("""CREATE TABLE Release_Dates (
+                 book_title TEXT(100) NOT NULL,
+                 movie_title TEXT(100) NOT NULL,
+                 release_date TEXT(100) NOT NULL
+                 );""")
 
 def insert_into_release(c, title, mov_title, r_date):
     """Inserts the release date information pulled from imdb to the
@@ -77,24 +67,24 @@ def replace_double_quotes(string):
 
 def main():
 
-    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-    c = conn.cursor()
-    create_release_table(c)
+    with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
+        c = conn.cursor()
+        create_release_table(c)
 
-    # Options for the Chrome driver, so Chrome operates without calling a window.
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    driver = webdriver.Chrome(chrome_options=options)
+        # Options for the driver.
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')
+        driver = webdriver.Chrome(chrome_options=options)
 
-    for title in movie_titles:
-        print(title)
-        mov_title, mov_id = get_movie_id(title)
-        r_date = get_movie_release(mov_id, driver)
-        print(f"Released: {r_date[0]}\n")
-        insert_into_release(c, title, mov_title, r_date)
-    driver.close()
-    conn.commit()
-    conn.close()
+        for title in movie_titles:
+            print(title)
+            mov_title, mov_id = get_movie_id(title)
+            r_date = get_movie_release(mov_id, driver)
+            print(f"Released: {r_date[0]}\n")
+            insert_into_release(c, title, mov_title, r_date)
+        driver.close()
+        conn.commit()
+
 
 
 if __name__ == "__main__":

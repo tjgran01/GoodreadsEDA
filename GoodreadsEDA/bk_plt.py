@@ -12,10 +12,7 @@ from dateutil.relativedelta import relativedelta
 from lists import movie_titles
 
 
-def get_mv_release(book_title, conn):
-    """Gets the release date movie that corresponds with the book title from the sqlite DB.
-
-<<<<<<< HEAD
+def get_yes_or_no(prompt):
     while True:
         print(prompt)
         ans = input(">")
@@ -25,12 +22,14 @@ def get_mv_release(book_title, conn):
             return False
         else:
             print("Sorry, that is not a valid answer.")
-            
-=======
+
+
+def get_mv_release(book_title, conn):
+    """Gets the release date movie that corresponds with the book title from the sqlite DB.
+
     Args:
         book_title (str): title of the book that the movie was based up for SQL lookup.
         conn (sqlite.connection): sqlite connection instance to use for DB queries.
->>>>>>> 67ed21d55062d2a94e2ef2f63c7198a591a445b6
 
     Returns:
         A string denoting the date that the movie in question was released on.
@@ -53,7 +52,7 @@ def set_plotting_params():
     sns.set_style("ticks")
 
 
-def plot_results(df, n_reviews, book_title, mv_release):
+def plot_results(df, n_reviews, book_title, mv_release, save_fig):
     """Plots the relationship between movie release and book ratings over time.
 
     Args:
@@ -63,33 +62,39 @@ def plot_results(df, n_reviews, book_title, mv_release):
         mv_release (str): the release date of the movie of the book.
     """
 
-    # getting movie release date
-    mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
     # setting plotting parameters
     set_plotting_params()
 
     # plotting rolling average of book reviews over time and date of movie
     # release
-    df.plot(x=df.index, y='review_score_rolling', color="#f99f75")
-    plt.axvline(x=mv_release, color="#f99f75")
+    df.plot(x=df.index, y='review_score_rolling', color="#92c6ff")
 
     # adjusting plot labels and orientation
     plt.title(f"Review Scores of '{book_title}' over time.")
     plt.yticks(np.arange(2.5, 5.5, .5))  # books are seldom given a score < 3.
     plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
+    plt.xlabel("Time")
+    plt.xticks(rotation=45)
+    plot_mv_release(mv_release=mv_release)
+    plt.subplots_adjust(bottom=0.2)
+    sns.despine()
+    if save_fig:
+        plt.savefig(f"{os.getcwd()}/../docs/img/{book_title}_fig.png",
+                      dpi=600, bbox_inches='tight')
+    plt.show()
+
+
+def plot_mv_release(mv_release):
+
+    mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
+    plt.axvline(x=mv_release_datetime, color='#f99f75')
     plt.text(mv_release_datetime + timedelta(days=10),
              4,
              'Movie Release Date',
              rotation=90,
              color='#767a78')
-    plt.xlabel("Time")
-    plt.xticks(rotation=45)
     plt.xlim(mv_release_datetime - relativedelta(years=1),
              mv_release_datetime + relativedelta(years=1))
-    plt.subplots_adjust(bottom=0.2)
-
-    sns.despine()
-    plt.show()
 
 
 def main(movie_titles, n_reviews_rolling_avg):
@@ -101,21 +106,15 @@ def main(movie_titles, n_reviews_rolling_avg):
            were also books.
         n_reviews_rolling_avg (int): number of ratings to use when
           calculating the rolling average rating.
-
-    Raises:
-        ValueError: I suppose this would be to account for an error in reading the SQL query into a DataFrame, not
-          entirely sure.
     """
 
+    save_fig = get_yes_or_no("Would you like to save these figures?: ")
+
     for title in movie_titles:
-        try:
             # Get df of reviews for the book
             with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
                 df = pd.read_sql_query("SELECT * FROM Reviews WHERE book_title LIKE ?;", conn, params=[title + '%'])
                 mv_release = get_mv_release(title, conn)
-
-            # formatting book reviews
-            df.drop(["matching_title", "book_url"], axis=1, inplace=True)
 
             # turn string dates into datetime objects, and sort the dataframe by date.
             df["review_date"] = pd.to_datetime(df["review_date"])
@@ -133,11 +132,7 @@ def main(movie_titles, n_reviews_rolling_avg):
 
             # dropping the top n_reviews_rolling_avg values, as they have no rolling average value
             df = df.iloc[(n_reviews_rolling_avg - 1):]
-            plot_results(df, n_reviews_rolling_avg, title, mv_release)
-
-        except ValueError:
-            traceback.print_exc()
-            continue
+            plot_results(df, n_reviews_rolling_avg, title, mv_release, save_fig)
 
 
 if __name__ == '__main__':

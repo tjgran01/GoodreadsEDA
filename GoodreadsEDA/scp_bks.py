@@ -10,20 +10,19 @@ from selenium.common.exceptions import NoSuchElementException
 
 def get_book_urls():
     """Loads the export file from 'mk_bklst.py', and gets the urls of all
-    of the books to pull reviews for. Returns the non-header rows"""
+    of the books to pull reviews for. Returns the non-header rows
+
+    Args:
+        None
+
+    Returns:
+        book_urls[:1]
+    """
 
     with open(f"{os.getcwd()}/csv_files/booksnlinks.csv", "r") as in_file:
         book_urls = list(csv.reader(in_file, delimiter=","))
 
     return book_urls[1:]
-
-
-def replace_double_quotes(string):
-    """When entering information into the SQL db, there is a chance to get
-    double quote characters within the text. This turns them into single
-    quotes, so they do not escape the insert statement."""
-
-    return string.replace('"', "'")
 
 
 def create_review_table(c):
@@ -149,9 +148,9 @@ def scrape_book_info(book_urls, driver, cursor):
             # print_pg_number(page_count)
             # each set of 10 pages is printed on the same line to save space & cut down on noise
             if page_count != 10:
-                print("{}..".format(page_count), end="", flush=True)
+                print(f"{page_count}..", end="", flush=True)
             else:
-                print("{}".format(page_count))
+                print(f"{page_count}")
             # grab every review on the current page and put it into "Reviews"
             reviews = driver.find_elements_by_class_name("reviewHeader")
             for review in reviews:
@@ -176,18 +175,17 @@ def main():
     options.add_argument('headless')
 
     # Connect to db, and create new table "Reviews"
-    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-    c = conn.cursor()
-    create_review_table(c)
-    driver = webdriver.Chrome(chrome_options=options)
+    with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
+        c = conn.cursor()
+        create_review_table(c)
+        driver = webdriver.Chrome(chrome_options=options)
 
-    # Making sure the DB and driver connections are closed if there are any errors
-    try:
-        scrape_book_info(book_urls, driver, c)
-    finally:
-        driver.close()
-        conn.commit()
-        conn.close()
+        # Making sure the DB and driver connections are closed if there are any errors
+        try:
+            scrape_book_info(book_urls, driver, c)
+        finally:
+            driver.close()
+            conn.commit()
 
 
 if __name__ == "__main__":
