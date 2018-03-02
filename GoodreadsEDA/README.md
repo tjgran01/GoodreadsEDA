@@ -7,12 +7,13 @@
     - [imdb_release.py](#imdb_releasepy)
     - [bk_plt.py](#bk_pltpy)
     - [all_bks.py](#all_bkspy)
+    - [othr_chts.py](#othr_chtspy)
 
 # Overview
 
 This README should be used as a reference for all of the scripts located within the
 `/GoodreadsEDA/GoodreadsEDA/` directory of this project. Currently, this section is a work in
-progress and will be updated as more general purpose scripts are created/updated
+progress and will be updated as more general purpose scripts are created/updated.
 
 ### To Contribute.
 
@@ -48,7 +49,7 @@ This means that for every commit a developer makes to this repo they also need t
     to that section in the TOC. (I'm extremely bad at this.)
 
 If in doubt, consider your audience might be users who are wholly unfamiliar with programming.
-Or, assume I (who am looking over your code), am an idiot. Which is not a wholly unfound assumption.
+Or, assume I (who is looking over your code), am an idiot. Which is not a wholly unfounded assumption.
 
 For questions or suggestions on formatting, etc, feel free to contact Trevor Grant at tjgran01@syr.edu.
 

@@ -61,7 +61,6 @@ def get_movie_id(title):
 
     ia = IMDb()
     s_result = ia.search_movie(title)
-    print(s_result[0]['long imdb canonical title'], s_result[0].movieID)
     mov_title = s_result[0]['long imdb canonical title']
     mov_ID = s_result[0].movieID
     return mov_title, mov_ID
@@ -103,10 +102,8 @@ def main():
     options.add_argument('headless')
 
     for title in movie_titl:
-        print(title)
         mov_title, mov_ID = get_movie_id(title)
         r_date = get_movie_release(mov_ID, options)
-        print(r_date)
         insert_into_release(c, title, mov_title, r_date)
         conn.commit()
     conn.close()

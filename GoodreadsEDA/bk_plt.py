@@ -32,6 +32,7 @@ def prompt_y_or_n(prompt):
             return False
         else:
             print("Sorry, that is not a valid answer.")
+            
 
 def get_mv_release(bk, conn):
     """Attempts to find the release date the book to be plotted."""
