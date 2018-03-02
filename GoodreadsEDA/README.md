@@ -37,14 +37,15 @@ This means that for every commit a developer makes to this repo they also need t
 
   - Every single function must include an INFORMATIVE docstring to be submitted to this repo.
    No matter how clear you think your code is, always assume it isn't. Comments and
-   docstrings are quite literally free.
+   docstrings are quite literally free. (I'm bad at this.)
 
-  - Dest practice is to write out what the inputs and outputs are for any function, that way
-  no one has to read the function line by line to understand what it does.
+  - Best practice is to write out what the inputs and outputs are for any function, that way
+  no one has to read the function line by line to understand what it does. (I'm very bad at
+  this.)
 
 3. An Update to this file, and it's table of contents.
   - Every script will have it's own section in this file, and will also have it's own link
-    to that section in the TOC.
+    to that section in the TOC. (I'm extremely bad at this.)
 
 If in doubt, consider your audience might be users who are wholly unfamiliar with programming.
 Or, assume I (who am looking over your code), am an idiot. Which is not a wholly unfound assumption.
@@ -91,7 +92,7 @@ review information for.
 #### *This script gives as output*:
 
 A .csv file located at: `/GoodreadsEDA/GoodreadsEDA/csv_files/booksnlinks.csv`. The .csv
-file includes the a row entry for every book on Goodreads based on the author list provided to
+file includes a row entry for every book on Goodreads based on the author list provided to
 the script as input. Each entry includes the author's name, the book's name, and the URL to find
 that book on Goodreads.com
 
@@ -110,8 +111,8 @@ names to be inputted, rather than forcing the user to generate the URLs themselv
 #### What this script does:
 
 This script is what will be used to generate the dataset to run analysis on. It's primary function
-is to iterate through all the of the rows a .csv file given as input, find a URL in each of those
-rows, visit the URL using a headless browser, and pull selected information from that url and
+is to iterate through all the of the rows of a .csv file given as input, find a URL in each of
+those rows, visit the URL using a headless browser, and pull selected information from that url and
 store that information in a database.
 
 *Note* All of this is done using the Selenium module. For more information on Selenium, visit:
@@ -127,7 +128,7 @@ The .csv file created by `mk_bklst.py`.
 An SQLite3 database (more accurately: a table called 'Reviews' in the database) which will be
 stored in this repository at `/GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db`. This table contains
 every review that gave the book a 1 - 5 rating on the books goodreads.com page. It currently holds
-the date of the review, the review score, and the name of the user who left the review as well as
+the date of the review, the review score, the name of the user who left the review, as well as
 the author's name, the book title, and the url from which the information was retrieved.
 
 #### Notes, Future, etc:
@@ -144,22 +145,23 @@ Currently this script takes about 8 hours to run to generate the current dataset
 #### What this script does:
 
 This script searches IMDB to find the release dates of the movies that were based off of books.
-It then retreieves the release date from the movie's IMDB page, and stores that information in
+It then retrieves the release date from the movie's IMDB page, and stores that information in
 a table named "Release_Dates" in the `/GoodreadsEDA/GoodreadsEDA/reviews.db` database.
 
 #### *This file takes as input*:
 
 A list of movie titles called `movie_titl`. Currently, the titles used in this project are already
-hardcoded into the script. If you would like to use the program to investigate titles other than
-the ones provided you will need to replace the strings in the list with the movie titles you are
-interested in investigating.
+hardcoded into the script `lists.py`. If you would like to use the program to investigate titles
+other than the ones provided you will need to replace the strings in the list with the movie
+titles you are interested in investigating. If you are only trying to visualize book scores over
+time you can ignore this script entirely.
 
 #### *This script gives as output*:
 
 An SQLite3 database (more accurately: a table called 'Release_Dates' in the database) which will be
-stored in this repository at `/GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db`. This table contains
-the release dates of the films listed in the `movie_titl` list. It also currently stores the title
-of the movie.
+stored in this repository at `/GoodreadsEDA/GoodreadsEDA/review_dbs/reviews.db`. This table
+contains the release dates of the films listed in the `movie_titl` list. It also currently stores
+the title of the movie as it appears on IMDb.com
 
 #### Notes, Future, etc:
 
@@ -168,6 +170,15 @@ to get a movie release for each book, but because books sometimes have slightly 
 then the films, this didn't work out in practice. If you are attempting to use this project as a
 baseline for your own analysis. Try to give the two tables a common key so that a merge can
 actually be successful.
+
+This process was made much more of a pain in the a... ... neck when, halfway through working
+on this script, I learned that this IMDb module is next to useless now. That is why the IMDb
+package is only used to retrieve a movie ID, and Selenium is used to actually gather the release
+date of the film. For more info:
+
+https://imdbpy.sourceforge.io/
+
+Or better yet, don't, because the site for it is down as well.
 
 ## bk_plt.py
 
@@ -185,10 +196,11 @@ movie release date as a solid line to indicate when a change in review scores mi
 
 #### *This file takes as input*:
 
-In order for this script to work both the "Reviews" and "Release_Date" tables in the SQLite3
-database must be generated via the scripts `scp_bks.py` and `imdb_release.py`. However, if you are
-not interested in plotting a movie release date, or just wish to get a visualization of a certain
-book over time, you can still run this script without the movie release information.
+In order for this script to work to it's full capacity both the "Reviews" and "Release_Date"
+tables in the SQLite3 database must be generated via the scripts `scp_bks.py` and
+`imdb_release.py`. However, if you are not interested in plotting a movie release date, and just
+wish to get a visualization of a certain book over time, you can still run this script without the
+movie release information. You will only need the output from `scp_bks.py` in that case.
 
 #### *This script gives as output*:
 
@@ -199,6 +211,11 @@ A graph, or series of graphs depending on how many books the user is interested 
 Work will continue to be done on this script so that each book can act as a subplot, so that all
 the books that the user wants to visualize will be displayed simultaneously, rather than having to
 exit out of one graph in order to get the next, as this is tedious to do if the use is interested in looking at many books.
+
+I didn't see a point in allowing users to print a solid orange line on a graph indicating when a
+movie was released. If you disagree, and think I missed out on the next great app idea, which,
+who knows? Feel free to send me a pull request. I only ask that you name the app "plttr" or
+something with the equal ability to induce eye rolls.
 
 ## all_bks.py
 
@@ -225,3 +242,31 @@ database must be generated via the scripts `scp_bks.py` and `imdb_release.py`.
 Outputs to the console the mean, std, n, and t-test for each subdivision of time.
 
 #### Notes, Future, etc:
+
+This script still needs to be put into and better commented. Also, instead of printing
+to the console, which is useless, it will export all of the data to either a .csv or
+format it into a markdown or html table so that it can be more easily looked over.
+
+## othr_chts.py
+
+##### Created: 2/2018
+##### Created by: Trevor Grant
+##### Email Support: tjgran01@syr.edu
+##### Created for: Creating charts from the information created bt all_bks.py.
+
+#### What this script does:
+
+This script was created as a quick and dirty way to make some extra data visualizations needed
+for the writeup of this project. It's both unimpressive, and not useful for much of anything.
+
+#### *This file takes as input*:
+
+Nada, everything is hardcoded into this bad boy.
+
+#### *This script gives as output*:
+
+A line chart and a bar chart that were needed for `docs/WRITEUP.md`
+
+#### Notes, Future, etc:
+
+Nothing, I only included an explanation of it because it exists.
