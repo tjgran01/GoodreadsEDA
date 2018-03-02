@@ -121,6 +121,8 @@ year before to one year after a screen adaptation's release date. The orange, so
 line indicates the release date of a screen adaptation. For all single book figures created by
 the project visit: `/docs/img/...`*
 
+---
+
 Visualizing certain books around the time of their release date did suggest some interesting trends.
 Oftentimes the review scores of a book would begin to dip a few months before the release of a
 screen adaptation and then spike shortly after the release of the film. However, in the aggregate
@@ -133,7 +135,7 @@ the screen adaptation was received.
 The mean review score of all of the original books mentioned in the main `README.md` was:
 3.92 (std=1.13). With the distribution of scores below:
 
-![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
+---
 
 |Review Score|# of Scores|        
 |------------|-----------|
@@ -142,6 +144,10 @@ The mean review score of all of the original books mentioned in the main `README
 |     3.0    |    1240   |
 |     2.0    |    621    |
 |     1.0    |    371    |
+
+---
+
+![ttl_dist_scores](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/ttl_review_scores.png)
 
 As mentioned earlier the overall results were heavily skewed towards positive ratings with 71.5% of
 all reviews in the dataset being either a four or a five. A reason for this might be that people
@@ -160,6 +166,8 @@ were evenly or normally distributed.
 
 ## Before and After Movie Releases:
 
+---
+
 |                                |   3mo     |   6mo     |   1yr     |   All    |
 |--------------------------------|-----------|-----------|-----------|----------|
 | Mean Before (In Stars)         |   4.11    |   3.98    |   3.89    |   3.88   |
@@ -171,6 +179,7 @@ were evenly or normally distributed.
 | P-Value                        |   .06     |   0.24    |   0.35    |   0.02   |
 | N (Both)                       |   285     |   440     |   798     |   2519   |
 
+---
 
 ![mean_diff](https://github.com/tjgran01/GoodreadsEDA/blob/master/docs/img/mean_diff.png)
 
@@ -180,6 +189,8 @@ the chart indicate that the score was negative, or that the average review score
 was **lower** following the film's release than prior. Values in green indicate that the average
 review score for that time frame was positive, or that the average review score for that
 timeframe was **higher** following the film's release than prior.*
+
+---
 
 The final analysis involved taking the entire collection of books, splitting them into separate
 groups based on different times before and after the release of the film, and balancing the

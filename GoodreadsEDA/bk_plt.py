@@ -15,85 +15,103 @@ sns.set_style("ticks")
 # my imports
 from lists import movie_titl
 
-def get_mv_release(bk_m):
+# Adjust value to change rolling average taken.
+n_reviews = 20
+
+
+def prompt_y_or_n(prompt):
+    while True:
+        print(prompt)
+        ans = input(">")
+        if ans[0].upper() == "Y":
+            return True
+        elif ans[0].upper() == "N":
+            return False
+        else:
+            print("Sorry, that is not a valid answer.")
+
+def get_mv_release(bk, conn):
     try:
         df_rel = pd.read_sql_query(f"""SELECT * FROM Release_Dates
-                                       WHERE book_title="{bk_m}"
+                                       WHERE book_title="{bk}"
                                        ;""", conn)
         return df_rel["release_date"][0]
     except IndexError as e:
         print(f"{e} \n")
-        print("""Hmm... it looks as though the program cannot find the
-Release_Date table... ... did you run imdb_release.py yet?""")
+        print(df_rel)
+        return None
 
 
-n_reviews = 20
+def get_review_score_data(bk, conn):
 
-for i, titl in enumerate(movie_titl):
-    try:
-        bk = movie_titl[i]
-        # Get movie release date for movie and df of reviews for the book.
-        conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-        mv_release = get_mv_release(bk)
-        # These two cases seemed to be giving me trouble, so I'm just hard coding them
-        # For now.
-        if titl == "Ender’s Game":
-            df = pd.read_sql_query(f"""SELECT * FROM Reviews
-                                       WHERE book_title = "Ender's Game (Ender's Saga, #1)"
-                                       ;""", conn)
-        elif titl == "Billy Lynn’s Long Halftime Walk":
-            df = pd.read_sql_query(f"""SELECT * FROM Reviews
-                                   WHERE book_title LIKE "Billy Lynn%"
-                                   ;""", conn)
-        else:
-            df = pd.read_sql_query(f"""SELECT * FROM Reviews WHERE book_title LIKE "{bk}%";""", conn)
+    print(bk)
+    df = pd.read_sql_query(f"""SELECT * FROM Reviews
+                               WHERE book_title
+                               LIKE "{bk}%";""", conn)
+    return df
 
-        conn.close()
 
-        df.drop(["matching_title", "book_url"], axis=1, inplace=True)
+def clean_review_data(df, n_reviews):
 
-        # turn string dates into datetime objects, and sort the dataframe by date.
-        df["review_date"] = pd.to_datetime(df["review_date"])
-        df.set_index("review_date", inplace=True)
-        df.sort_index(inplace=True)
+    df.drop(["matching_title", "book_url"], axis=1, inplace=True)
+    # turn string dates into datetime objects, and sort the dataframe by date.
+    df["review_date"] = pd.to_datetime(df["review_date"])
+    df.set_index("review_date", inplace=True)
+    df.sort_index(inplace=True)
+    # change review scores to ints, if it cannot be converted to int, NaN.
+    df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
+    # drop rows with NaN values in them.
+    df.dropna(inplace=True)
+    # take rolling average of every fifteen review scores.
+    df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
+                                                            center=False).mean()
 
-        # change review scores to ints, if it cannot be converted to int, NaN.
-        df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
+    return(df)
 
-        # drop rows with NaN values in them.
-        df.dropna(inplace=True)
 
-        # take rolling average of every fifteen review scores.
-        df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
-                                                                center=False).mean()
+def plot_review_data(df, n_reviews, titl, save_files, mv_release=None):
 
-        # plotting parameters
-        x = df.index
-        y = df["review_score_rolling"]
+    x = df.index
+    y = df["review_score_rolling"]
 
-        plt.plot(x, y)
+    plt.plot(x, y)
 
-        plt.yticks(np.arange(2.5, 5.5, .5)) # books are seldom given a score < 3.
-        plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
-
-        # plot release date of movie as a line and label it.
-        plt.axvline(x=mv_release, color="#f99f75")
+    plt.title(f"Review Scores for '{titl}' Over Time.")
+    plt.yticks(np.arange(2.5, 5.5, .5))
+    plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
+    plt.xticks(rotation=45)
+    plt.xlabel("Year")
+    # If mv_release avilable, plot a solid line to indicate the release date.
+    if mv_release:
         mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
+        plt.axvline(x=mv_release_datetime, color="#f99f75")
         plt.text(mv_release_datetime + timedelta(days=10), 4,
                                                  'Movie Release Date',
                                                  rotation=90,
                                                  color='#767a78')
-
-        plt.xlabel("Year")
-        plt.xticks(rotation=45)
+    # Adjust the plot to be + / - 1 year from movie release.
         plt.xlim(mv_release_datetime - relativedelta(years=1),
                  mv_release_datetime + relativedelta(years=1))
-        plt.title(f"Review Scores of '{bk}' over time.")
-        plt.subplots_adjust(bottom=0.2)
-        sns.despine()
-        plt.savefig(f"{os.getcwd()}/../docs/img/{bk}Fig.png", dpi=600)
-        plt.show()
-    except ValueError as e:
-        print(e)
-        print(df)
-        continue
+    plt.subplots_adjust(bottom=0.2)
+    sns.despine()
+    if save_files:
+        plt.savefig(f"{os.getcwd()}/../docs/img/{titl}Fig.png", dpi=600)
+    plt.show()
+
+
+def main():
+    save_prompt = ("Would you like to save all of the plots generated by "
+                    "this script? (Y/n): ")
+    save_files = prompt_y_or_n(save_prompt)
+    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
+    for titl in movie_titl:
+        df = get_review_score_data(titl, conn)
+        df = clean_review_data(df, n_reviews)
+        mv_release = get_mv_release(titl, conn)
+        plot_review_data(df, n_reviews, titl, save_files, mv_release=mv_release)
+
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()

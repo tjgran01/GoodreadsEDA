@@ -8,7 +8,7 @@ movie_titl = ["Big Little Lies", "Me Before You", "The Circle",
               "Beasts of No Nation", "The Family Fang",
               "This Is Where I Leave You", "Me and Earl and the Dying Girl",
               "The Handmaid's Tale", "The Dinner",
-              "Billy Lynn’s Long Halftime Walk", "Ender’s Game", "If I Stay"]
+              "Billy Lynn's Long Halftime Walk", "Ender's Game", "If I Stay"]
 
 # List of all the author book list pages on goodreads.com
 auth_urls = ["https://www.goodreads.com/author/list/322069.Liane_Moriarty",
