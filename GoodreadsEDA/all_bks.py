@@ -1,15 +1,15 @@
-import pandas as pd
-import numpy as np
-import sqlite3
 import os
+import sqlite3
+import traceback
 from datetime import datetime
+import pandas as pd
 from scipy.stats import ttest_ind
-import sys
-from dateutil.relativedelta import relativedelta
+# my imports
+from lists import movie_titles
 
-from lists import movie_titl
 
-n_reviews = 20
+n_reviews_rolling_avg = 20
+
 
 def get_mv_release(bk_m):
     """Gathers the movie release data for a corresponding book title.
@@ -21,52 +21,35 @@ def get_mv_release(bk_m):
                                        WHERE book_title="{bk_m}"
                                        ;""", conn)
         return df_rel["release_date"][0]
-    except IndexError as e:
-        print(f"{e} \n")
+    except IndexError:
+        traceback.print_exc()
         print("""Hmm... it looks as though the program cannot find the
 Release_Date table... ... did you run imdb_release.py yet?""")
 
 
 def create_even_samples(df, df2):
-    """Ballances the data so that the before and after values have an equal #
-    of sample sies."""
+    """Balances the data so that the before and after values have an equal #
+    of sample sites."""
 
     sample_diff = df.shape[0] - df2.shape[0]
     if sample_diff > 0:
-        df = df.sample(df2.shape[0])
-        return (df, df2)
+        return df.sample(df2.shape[0]), df2
     elif sample_diff < 0:
-        df2 = df2.sample(df.shape[0])
-        return (df, df2)
-    else:
-        return (df, df2)
+        return df, df2.sample(df.shape[0])
+    return df, df2
 
 
 # Create empty df to append each book to after preprocessing.
 df_all = pd.DataFrame()
 
 # Go through every title in the list above.
-for i, titl in enumerate(movie_titl):
-    bk = movie_titl[i]
+for title in movie_titles:
     # Get movie release date for movie and df of reviews for the book.
-    conn = sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db")
-    mv_release = get_mv_release(bk)
-    # These two cases seemed to be giving me trouble, so I'm just hard coding them
-    # For now.
-    if titl == "Ender’s Game":
-        df = pd.read_sql_query(f"""SELECT * FROM Reviews
-                                   WHERE book_title = "Ender's Game (Ender's Saga, #1)"
-                                   ;""", conn)
-    elif titl == "Billy Lynn’s Long Halftime Walk":
-        df = pd.read_sql_query(f"""SELECT * FROM Reviews
-                               WHERE book_title LIKE "Billy Lynn%"
-                               ;""", conn)
-    else:
-        df = pd.read_sql_query(f"""SELECT * FROM Reviews WHERE book_title LIKE "{bk}%";""", conn)
-
-    conn.close()
+    with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
+        df = pd.read_sql_query("SELECT * FROM Reviews WHERE book_title LIKE ?;", conn, params=[title + '%'])
 
     df.drop(["matching_title", "book_url"], axis=1, inplace=True)
+    mv_release = get_mv_release(title)
     mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
     df_all["movie_release"] = mv_release_datetime
 
@@ -82,7 +65,7 @@ for i, titl in enumerate(movie_titl):
     df.dropna(inplace=True)
 
     # take rolling average of review scores.
-    df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews,
+    df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews_rolling_avg,
                                                             center=False).mean()
 
     df_all = df_all.append(df)
@@ -100,7 +83,7 @@ df_all["6mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.Dat
 df_all["3mo_before_release"] = df_all["movie_release"].apply(lambda x: x - pd.DateOffset(months=3))
 df_all["3mo_after_release"] = df_all["movie_release"].apply(lambda x: x + pd.DateOffset(months=3))
 
-# Split the large DataFrame based on the values calulated before.
+# Split the large DataFrame based on the values calculated before.
 df_before = df_all[df_all.index <= df_all["movie_release"]]
 df_after = df_all[df_all.index > df_all["movie_release"]]
 
@@ -114,7 +97,6 @@ df_before_3mo = df_before[df_before.index >= df_before["3mo_before_release"]]
 df_after_3mo = df_after[df_after.index <= df_after["3mo_after_release"]]
 
 # Balance the data:
-
 df_after, df_before = create_even_samples(df_after, df_before)
 df_after_1yr, df_before_1yr = create_even_samples(df_after_1yr, df_before_1yr)
 df_after_6mo, df_before_6mo = create_even_samples(df_after_6mo, df_before_6mo)

@@ -30,7 +30,7 @@ This means that for every commit a developer makes to this repo they also need t
 
   - You don't need to comment every single line, but should highlight what certain sections
     of the code are doing. Do these four lines process textual data? Comment it. Do these
-    six lines check to make sure what the user inputed, and what data is actually in the data
+    six lines check to make sure what the user inputted, and what data is actually in the data
     consistent? Comment it.
 
 2. Docstrings for function related changes.

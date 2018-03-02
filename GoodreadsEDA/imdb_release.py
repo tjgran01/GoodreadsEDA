@@ -1,57 +1,42 @@
-import pandas as pd
 import os
 import re
 import sqlite3
-
-from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+import traceback
 from imdb import IMDb
+from selenium import webdriver
 # my imports
-from lists import movie_titl
+from lists import movie_titles
 
 
 def create_release_table(c):
-    """Creates a table called "Release_Dates" in the reviews.db databse if it doesn't
+    """Creates a table called "Release_Dates" in the reviews.db database if it doesn't
     already exist. If "Release_Dates" does exists, it informs the user that it will
     overwrite the current database."""
 
     try:
-        c.execute(f"""CREATE TABLE Release_Dates (
-                      book_title TEXT(100) NOT NULL,
-                      movie_title TEXT(100) NOT NULL,
-                      release_date TEXT(100) NOT NULL
-                      );""")
-    except sqlite3.OperationalError as e:
-        c.execute(f"""DROP TABLE Release_Dates;""")
-        print("table being overwritten")
-        c.execute(f"""CREATE TABLE Release_Dates (
-                      book_title TEXT(100) NOT NULL,
-                      movie_title TEXT(100) NOT NULL,
-                      release_date TEXT(100) NOT NULL
-                      );""")
+        c.execute("""CREATE TABLE Release_Dates (
+                     book_title TEXT(100) NOT NULL,
+                     movie_title TEXT(100) NOT NULL,
+                     release_date TEXT(100) NOT NULL
+                     );""")
+    except sqlite3.OperationalError:
+        traceback.print_exc()
+        c.execute("""DROP TABLE Release_Dates;""")
+        print("Table being overwritten")
+        c.execute("""CREATE TABLE Release_Dates (
+                     book_title TEXT(100) NOT NULL,
+                     movie_title TEXT(100) NOT NULL,
+                     release_date TEXT(100) NOT NULL
+                     );""")
 
 
 def insert_into_release(c, title, mov_title, r_date):
     """Inserts the release date information pulled from imdb to the
     "Release_Dates" table"""
-
-    try:
-        c.execute(f"""INSERT INTO Release_Dates (
-                      book_title, movie_title,
-                      release_date)
-                      VALUES ("{title}", "{mov_title}",
-                      "{r_date[0]}"
-                      )""")
-    except sqlite3.OperationalError as e:
-        print(f"ERROR: {e}")
-        mov_title = replace_double_quotes(mov_title)
-        c.execute(f"""INSERT INTO Release_Dates (
-                      book_title, movie_title,
-                      release_date)
-                      VALUES ("{title}", "{mov_title}",
-                      "{r_date[0]}"
-                      )""")
-        print("ERROR resolved.")
+    # title, mov_title, r_date = [remove_quotes(x) for x in [title, mov_title, r_date[0]]]
+    # title, mov_title, r_date = [re.escape(x) for x in [title, mov_title, r_date[0]]]
+    c.execute("INSERT INTO Release_Dates (book_title, movie_title, release_date) VALUES (?, ?, ?)",
+              (title, mov_title, r_date[0]))
 
 
 def get_movie_id(title):
@@ -59,27 +44,25 @@ def get_movie_id(title):
     using the title of the movie as a string, and returns the first result's
     corresponding movie ID as well as the movie title as IMDb stores it."""
 
-    ia = IMDb()
-    s_result = ia.search_movie(title)
-    print(s_result[0]['long imdb canonical title'], s_result[0].movieID)
+    movie_db = IMDb()
+    s_result = movie_db.search_movie(title)
+    # print(s_result[0]['long imdb canonical title'], s_result[0].movieID)
     mov_title = s_result[0]['long imdb canonical title']
-    mov_ID = s_result[0].movieID
-    return mov_title, mov_ID
+    mov_id = s_result[0].movieID
+    return mov_title, mov_id
 
 
-def get_movie_release(mov_ID, options):
+def get_movie_release(mov_id, driver):
     """Scrapes the page of the movie ID given, finds the release date element
     and returns it."""
 
-    mov_url = f"http://www.imdb.com/title/tt{mov_ID}/"
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(mov_url)
+    driver.get(f"http://www.imdb.com/title/tt{mov_id}/")
     mov_info = driver.find_element_by_id("titleDetails")
     r_date_elm = mov_info.find_element_by_xpath("//*[contains(text(), 'Release Date:')]/parent::*").text
     r_date = re.findall(r'\d\d\s(?:January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}', r_date_elm)
     if not r_date:
         r_date = re.findall(r'\d\s(?:January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}', r_date_elm)
-    driver.close()
+
     return r_date
 
 
@@ -89,7 +72,7 @@ def replace_double_quotes(string):
     quotes, so they do not escape the insert statement."""
 
     string = string.replace('"', "'")
-    return(string)
+    return string
 
 
 def main():
@@ -101,14 +84,16 @@ def main():
     # Options for the Chrome driver, so Chrome operates without calling a window.
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
+    driver = webdriver.Chrome(chrome_options=options)
 
-    for title in movie_titl:
+    for title in movie_titles:
         print(title)
-        mov_title, mov_ID = get_movie_id(title)
-        r_date = get_movie_release(mov_ID, options)
-        print(r_date)
+        mov_title, mov_id = get_movie_id(title)
+        r_date = get_movie_release(mov_id, driver)
+        print(f"Released: {r_date[0]}\n")
         insert_into_release(c, title, mov_title, r_date)
-        conn.commit()
+    driver.close()
+    conn.commit()
     conn.close()
 
 
