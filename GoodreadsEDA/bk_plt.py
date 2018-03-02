@@ -20,6 +20,9 @@ n_reviews = 20
 
 
 def prompt_y_or_n(prompt):
+    """Displays a prompts for a user to reply yes or no to, returns the yes or no
+    answer as a bool, and rejects invalid input."""
+
     while True:
         print(prompt)
         ans = input(">")
@@ -31,6 +34,8 @@ def prompt_y_or_n(prompt):
             print("Sorry, that is not a valid answer.")
 
 def get_mv_release(bk, conn):
+    """Attempts to find the release date the book to be plotted."""
+
     try:
         df_rel = pd.read_sql_query(f"""SELECT * FROM Release_Dates
                                        WHERE book_title="{bk}"
@@ -38,20 +43,23 @@ def get_mv_release(bk, conn):
         return df_rel["release_date"][0]
     except IndexError as e:
         print(f"{e} \n")
-        print(df_rel)
         return None
 
 
 def get_review_score_data(bk, conn):
+    """Queries the 'Reviews' table in the db to find the reviews matching the
+    book title given as input."""
 
-    print(bk)
-    df = pd.read_sql_query(f"""SELECT * FROM Reviews
-                               WHERE book_title
-                               LIKE "{bk}%";""", conn)
+        df = pd.read_sql_query(f"""SELECT * FROM Reviews
+                                   WHERE book_title
+                                   LIKE "{bk}%";""", conn)
     return df
 
 
 def clean_review_data(df, n_reviews):
+    """Prepares the DataFrame of review information for plotting by removing
+    erroneous information, converting string dates to datetime object, sorting
+    the DataFrame date, and dropping rows that do not contain a review score."""
 
     df.drop(["matching_title", "book_url"], axis=1, inplace=True)
     # turn string dates into datetime objects, and sort the dataframe by date.
@@ -70,6 +78,9 @@ def clean_review_data(df, n_reviews):
 
 
 def plot_review_data(df, n_reviews, titl, save_files, mv_release=None):
+    """Plots a simple line graph of the current review data. If applicable,
+    plots the movie release and adjusts the x axis to better fit the timeframe
+    of the movie release."""
 
     x = df.index
     y = df["review_score_rolling"]
