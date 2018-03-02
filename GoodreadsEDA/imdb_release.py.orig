@@ -44,9 +44,14 @@ def get_movie_id(title):
     using the title of the movie as a string, and returns the first result's
     corresponding movie ID as well as the movie title as IMDb stores it."""
 
+<<<<<<< HEAD
+    ia = IMDb()
+    s_result = ia.search_movie(title)
+=======
     movie_db = IMDb()
     s_result = movie_db.search_movie(title)
     # print(s_result[0]['long imdb canonical title'], s_result[0].movieID)
+>>>>>>> 67ed21d55062d2a94e2ef2f63c7198a591a445b6
     mov_title = s_result[0]['long imdb canonical title']
     mov_id = s_result[0].movieID
     return mov_title, mov_id
@@ -86,11 +91,17 @@ def main():
     options.add_argument('headless')
     driver = webdriver.Chrome(chrome_options=options)
 
+<<<<<<< HEAD
+    for title in movie_titl:
+        mov_title, mov_ID = get_movie_id(title)
+        r_date = get_movie_release(mov_ID, options)
+=======
     for title in movie_titles:
         print(title)
         mov_title, mov_id = get_movie_id(title)
         r_date = get_movie_release(mov_id, driver)
         print(f"Released: {r_date[0]}\n")
+>>>>>>> 67ed21d55062d2a94e2ef2f63c7198a591a445b6
         insert_into_release(c, title, mov_title, r_date)
     driver.close()
     conn.commit()
