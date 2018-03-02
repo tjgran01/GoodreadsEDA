@@ -30,7 +30,7 @@ This means that for every commit a developer makes to this repo they also need t
 
   - You don't need to comment every single line, but should highlight what certain sections
     of the code are doing. Do these four lines process textual data? Comment it. Do these
-    six lines check to make sure what the user inputed, and what data is actually in the data
+    six lines check to make sure what the user inputted, and what data is actually in the data
     consistent? Comment it.
 
 2. Docstrings for function related changes.
@@ -39,7 +39,7 @@ This means that for every commit a developer makes to this repo they also need t
    No matter how clear you think your code is, always assume it isn't. Comments and
    docstrings are quite literally free.
 
-  - Dest practice is to write out what the inputs and outputs are for any function, that way
+  - Best practice is to write out what the inputs and outputs are for any function, that way
   no one has to read the function line by line to understand what it does.
 
 3. An Update to this file, and it's table of contents.
