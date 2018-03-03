@@ -45,6 +45,9 @@ If you are running these scripts from scratch, be prepared to wait a while
 the entirely of *'Rotten'* on Netflix, and then making dinner, eating it,
 and reading a book while this program runs? (Or do what I did and sleep)
 
+If you only wish to see a plot of a single book over time run `./single_bk_plt.py` and follow
+the on screen prompts. It will take about a minute and a half to fetch all the data for the book.
+
 If you wish to run the scripts individually they should be run in this order:
 
 1. `./mk_bklst.py` (outputs a .csv file with all the urls the need to be scraped.)

@@ -8,6 +8,7 @@
     - [bk_plt.py](#bk_pltpy)
     - [all_bks.py](#all_bkspy)
     - [othr_chts.py](#othr_chtspy)
+    - [single_bk_plt.py](#single_bk_pltpy)
 
 # Overview
 
@@ -271,3 +272,33 @@ A line chart and a bar chart that were needed for `docs/WRITEUP.md`
 #### Notes, Future, etc:
 
 Nothing, I only included an explanation of it because it exists.
+
+## single_bk_plt.py
+
+##### Created: 2/2018
+##### Created by: Trevor Grant
+##### Email Support: tjgran01@syr.edu
+##### Created for: Creating a single plot of a book's review score over time.
+
+#### What this script does:
+
+This script prompts the user to enter some information about a book that they wish to a plot
+review scores of. It then scrapes the data for that book, and outputs a graph for the user to
+both save for later use as well as view.
+
+#### *This file takes as input*:
+
+Input given up the user. They will need to provide the title of the book they wish to plot, the
+author of the book, and tell the script if a movie has been made based on the publication.
+
+#### *This script gives as output*:
+
+AA line chart is displayed to the user after this script does it's magic. The user also can chose
+to save the file. The file will be saved to `GoodreadsEDA/docs/img/{book_title}_fig.png`.
+
+#### Notes, Future, etc:
+
+Still need to include fetching the release date of the movie to this script. It currently
+just plots the books score over time, but I will eventually include the release date functionality
+that is included in the main scripts. Since this is meant to be more of a user facing script,
+something like this would be useful to build out into a webapp, etc.
