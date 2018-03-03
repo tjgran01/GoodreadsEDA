@@ -75,7 +75,8 @@ def plot_results(df, n_reviews, book_title, mv_release, save_fig):
     plt.ylabel(f"Average Rating Per {n_reviews} Reviews")
     plt.xlabel("Time")
     plt.xticks(rotation=45)
-    plot_mv_release(mv_release=mv_release)
+    if mv_release:
+        plot_mv_release(mv_release=mv_release)
     plt.subplots_adjust(bottom=0.2)
     sns.despine()
     if save_fig:
@@ -97,7 +98,7 @@ def plot_mv_release(mv_release):
              mv_release_datetime + relativedelta(years=1))
 
 
-def main(movie_titles, n_reviews_rolling_avg):
+def main(movie_titles, n_reviews_rolling_avg, conn=None):
     """Iterates through movies/book pairs, plotting each one's popularity as a
     book relative to its release date as a movie.
 
@@ -111,28 +112,36 @@ def main(movie_titles, n_reviews_rolling_avg):
     save_fig = get_yes_or_no("Would you like to save these figures?: ")
 
     for title in movie_titles:
-            # Get df of reviews for the book
+        # Get df of reviews for the book
+        if not conn:
             with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
-                df = pd.read_sql_query("SELECT * FROM Reviews WHERE book_title LIKE ?;", conn, params=[title + '%'])
+                df = pd.read_sql_query("""SELECT * FROM Reviews
+                                          WHERE book_title
+                                          LIKE ?;""", conn, params=[title + '%'])
                 mv_release = get_mv_release(title, conn)
+        else:
+            df = pd.read_sql_query("""SELECT * FROM Reviews
+                                      WHERE book_title
+                                      LIKE ?;""", conn, params=[title + '%'])
+            mv_release = None
 
-            # turn string dates into datetime objects, and sort the dataframe by date.
-            df["review_date"] = pd.to_datetime(df["review_date"])
-            df.set_index("review_date", inplace=True)
-            df.sort_index(inplace=True)
+        # turn string dates into datetime objects, and sort the dataframe by date.
+        df["review_date"] = pd.to_datetime(df["review_date"])
+        df.set_index("review_date", inplace=True)
+        df.sort_index(inplace=True)
 
-            # change review scores to ints, if it cannot be converted to int, NaN.
-            df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
+        # change review scores to ints, if it cannot be converted to int, NaN.
+        df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
 
-            # drop rows with NaN values in them.
-            df.dropna(inplace=True)
+        # drop rows with NaN values in them.
+        df.dropna(inplace=True)
 
-            # take rolling average of every n_reviews_rolling_avg review scores.
-            df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews_rolling_avg, center=False).mean()
+        # take rolling average of every n_reviews_rolling_avg review scores.
+        df["review_score_rolling"] = df["review_score"].rolling(window=n_reviews_rolling_avg, center=False).mean()
 
-            # dropping the top n_reviews_rolling_avg values, as they have no rolling average value
-            df = df.iloc[(n_reviews_rolling_avg - 1):]
-            plot_results(df, n_reviews_rolling_avg, title, mv_release, save_fig)
+        # dropping the top n_reviews_rolling_avg values, as they have no rolling average value
+        df = df.iloc[(n_reviews_rolling_avg - 1):]
+        plot_results(df, n_reviews_rolling_avg, title, mv_release, save_fig)
 
 
 if __name__ == '__main__':

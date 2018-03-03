@@ -138,7 +138,8 @@ def scrape_book_info(book_urls, driver, cursor):
         author = entry[0]
         title = entry[1]
         url = entry[2]
-
+        print(author, title, url)
+        time.sleep(5)
         driver.get(url)
 
         # Goodreads keeps a collection of 10 pages of 30 reviews available on the
@@ -188,12 +189,13 @@ def main():
             conn.commit()
 
 
+scores_to_numbers_dict = {
+    "it was amazing" : 5,
+    "really liked it": 4,
+    "liked it"       : 3,
+    "it was ok"      : 2,
+    "did not like it": 1
+}
+
 if __name__ == "__main__":
-    scores_to_numbers_dict = {
-        "it was amazing" : 5,
-        "really liked it": 4,
-        "liked it"       : 3,
-        "it was ok"      : 2,
-        "did not like it": 1
-    }
     main()
