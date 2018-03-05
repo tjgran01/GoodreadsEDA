@@ -39,8 +39,8 @@ def insert_into_release(c, title, mov_title, r_date):
     Returns:
         None"""
 
-    c.execute("INSERT INTO Release_Dates (book_title, movie_title, release_date) VALUES (?, ?, ?)",
-              (title, mov_title, r_date[0]))
+    c.execute("""INSERT INTO Release_Dates (book_title, movie_title, release_date)
+               VALUES (?, ?, ?)""", (title, mov_title, r_date[0]))
 
 
 def get_movie_id(title):
@@ -84,7 +84,7 @@ def get_movie_release(mov_id, driver):
     return r_date
 
 
-def main():
+def main(c=None, driver=None, single_title=None):
     """Iterates through a list of movie titles and searches them on IMDb.com,
     finds the release date to the title and stores it in an SQLite3 table.
 
@@ -94,23 +94,33 @@ def main():
     Returns:
         None"""
 
-    with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
-        c = conn.cursor()
+    if not c:
+        with sqlite3.connect(f"{os.getcwd()}/review_dbs/reviews.db") as conn:
+            c = conn.cursor()
+            create_release_table(c)
+
+            # Options for the driver.
+            options = webdriver.ChromeOptions()
+            options.add_argument('headless')
+            driver = webdriver.Chrome(chrome_options=options)
+
+            for title in movie_titles:
+                print(title)
+                mov_title, mov_id = get_movie_id(title)
+                r_date = get_movie_release(mov_id, driver)
+                print(f"Released: {r_date[0]}\n")
+                insert_into_release(c, title, mov_title, r_date)
+
+            driver.close()
+            conn.commit()
+
+    else:
         create_release_table(c)
-
-        # Options for the driver.
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        driver = webdriver.Chrome(chrome_options=options)
-
-        for title in movie_titles:
-            print(title)
-            mov_title, mov_id = get_movie_id(title)
-            r_date = get_movie_release(mov_id, driver)
-            print(f"Released: {r_date[0]}\n")
-            insert_into_release(c, title, mov_title, r_date)
-        driver.close()
-        conn.commit()
+        print(single_title)
+        mov_title, mov_id = get_movie_id(single_title)
+        r_date = get_movie_release(mov_id, driver)
+        print(f"Released: {r_date[0]}\n")
+        insert_into_release(c, single_title, mov_title, r_date)
 
 
 if __name__ == "__main__":

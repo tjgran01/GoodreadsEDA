@@ -159,6 +159,7 @@ def report_stats(df_before, df_after, time_period):
 
 
 def main():
+    
     df_all = clean_review_data(movie_titles)
 
     print(f"Mean review score: {df_all['review_score'].mean()}")

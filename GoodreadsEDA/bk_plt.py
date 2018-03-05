@@ -113,7 +113,7 @@ def plot_mv_release(mv_release):
              mv_release_datetime + relativedelta(years=1))
 
 
-def main(movie_titles, n_reviews_rolling_avg, conn=None):
+def main(movie_titles, n_reviews_rolling_avg, conn=None, mv_release=None):
     """Iterates through movies/book pairs, plotting each one's popularity as a
     book relative to its release date as a movie.
 
@@ -135,18 +135,22 @@ def main(movie_titles, n_reviews_rolling_avg, conn=None):
                 df = pd.read_sql_query("""SELECT * FROM Reviews
                                           WHERE book_title
                                           LIKE ?;""", conn, params=[title + '%'])
-                mv_release = get_mv_release(title, conn)
+            print(df)
         else:
             df = pd.read_sql_query("""SELECT * FROM Reviews
                                       WHERE book_title
                                       LIKE ?;""", conn, params=[title + '%'])
-            mv_release = None
 
+        if "matching_title" in df.columns:
+            df.drop(columns=["matching_title"], inplace=True)
+
+        mv_release = get_mv_release(title, conn)
+        print(mv_release)
         # turn string dates into datetime objects, and sort the dataframe by date.
         df["review_date"] = pd.to_datetime(df["review_date"])
         df.set_index("review_date", inplace=True)
         df.sort_index(inplace=True)
-
+        print(df)
         # change review scores to ints, if it cannot be converted to int, NaN.
         df["review_score"] = df["review_score"].apply(pd.to_numeric, errors='coerce')
 
