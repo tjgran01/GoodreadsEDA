@@ -13,6 +13,14 @@ from lists import movie_titles
 
 
 def get_yes_or_no(prompt):
+    """Sanitizes user input to yes or no questions.
+
+    Args:
+        Prompt(str): The question to display to the user.
+
+    Returns:
+        Bool: True if user answeres yes, False if user answers no."""
+
     while True:
         print(prompt)
         ans = input(">")
@@ -48,6 +56,7 @@ def get_mv_release(book_title, conn):
 
 def set_plotting_params():
     """Setting package-wide plotting parameters"""
+
     plt.style.use('seaborn-pastel')
     sns.set_style("ticks")
 
@@ -86,6 +95,12 @@ def plot_results(df, n_reviews, book_title, mv_release, save_fig):
 
 
 def plot_mv_release(mv_release):
+    """Plots a solid, vertical, line to represent the day a movie was released
+    on the plot of review scores. Adjusts the x axis of the plot to be within
+    a year of this date.
+
+    Args:
+        mv_release(str): The date that the movie was release."""
 
     mv_release_datetime = datetime.strptime(mv_release, "%d %B %Y")
     plt.axvline(x=mv_release_datetime, color='#f99f75')
@@ -107,6 +122,8 @@ def main(movie_titles, n_reviews_rolling_avg, conn=None):
            were also books.
         n_reviews_rolling_avg (int): number of ratings to use when
           calculating the rolling average rating.
+        conn: Optional connection to database if this function is being called
+        from another script.
     """
 
     save_fig = get_yes_or_no("Would you like to save these figures?: ")

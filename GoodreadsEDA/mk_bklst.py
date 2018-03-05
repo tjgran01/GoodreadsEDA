@@ -12,11 +12,12 @@ def get_auth_bks(url):
     """Opens a url for an author's booklist page on goodreads.com and returns
     a list of urls for each of the author's books.
 
-    INPUT
-     url (str): Author's URL
-    OUTPUT
-     [str]: List of links to author's books if the parsing is successful
-     None: prints the encountered Exception and returns None if an exception is encountered in bs4 parsing.
+    Args:
+        url (str): Author's URL
+    Returns:
+        [str]: List of links to author's books if the parsing is successful
+        None: prints the encountered Exception and returns None if an exception
+        is encountered in bs4 parsing.
      """
 
     try:
@@ -34,6 +35,18 @@ def get_auth_bks(url):
 
 
 def write_to_csv(out_file, auth_bks, auth_name, append=True):
+    """Writes the data scraped about books to a .csv file.
+
+    Args:
+        out_file: csv_file object to be written to.
+        auth_bks: list of all of the books by an author on Goodreads.com
+        auth_name: the author's name.
+        append: Optional arguement to tell the function weather or not the
+        program is appending a file or opening a new one.
+
+    Returns:
+        None"""
+
     writer = csv.writer(out_file, delimiter=",")
     # Write header to .csv file.
     if not append:
@@ -48,6 +61,10 @@ def write_to_csv(out_file, auth_bks, auth_name, append=True):
 
 
 def main():
+    """Iterates through all of the urls provided by the user in 'lists.py', and
+    scrapes all of the book titles from the author's Goodreads.com page. Then
+    stores the information about the books in a .csv export."""
+    
     for auth_url in auth_urls:
         # The author's name is listed at the end of each url, after the last '.'
         auth_name = auth_url[auth_url.rfind(".") + 1:]

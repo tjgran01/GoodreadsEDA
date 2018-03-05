@@ -217,7 +217,7 @@ adaptation to rule out the possibility that average review scores increase over 
 of whether or not they were given a screen adaptation.
 
 The findings posted above do not indicate that a clear effect exists over the entire dataset, at
-least not to a magnitude that warrants further investigation into how an author's other book's
+least not to a magnitude that warrants further investigation into how an author's other book
 reviews are affected by the release of a film.
 
 Others using Goodreads.com as a sample should be aware of the potential skew within the data,
